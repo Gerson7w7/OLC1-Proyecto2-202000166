@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "commonjs",
+        "outDir": "dist",
+        "sourceMap": true,
+    },
+    "include": [
+        "interprete/**/*.ts",
+        "interprete/Expresion/**/*.ts",
+        "interprete/Error/**/*.ts",
+        "interprete/Extra/**/*.ts",
+        "interprete/Instruccion/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
