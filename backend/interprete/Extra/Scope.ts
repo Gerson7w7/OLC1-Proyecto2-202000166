@@ -11,14 +11,16 @@ export class Scope {
 
     public crearVar(id: string, value: any, type: Tipo, linea: number, columna: number) {
         let scope: Scope | null = this;
+        console.log("valor: " + value);
 
         while(scope != null) {
             if(scope.variables.has(id)) { 
-                throw new _Error(linea, columna, "Semántico", "La variable " + id + " ya ha sido declarada.");   
+                throw new _Error(linea, columna, "Semántico", "La variable " + id + " ya ha sido declarada.");
             }
             scope = scope.padre;
         }
         if(value == null) {
+            console.log("toy aki");
             if(type == Tipo.ENTERO) {
                 this.variables.set(id, new Simbolo(0, id, type));
             } else if(type == Tipo.DECIMAL) {
@@ -31,6 +33,7 @@ export class Scope {
                 this.variables.set(id, new Simbolo(true, id, type));
             }
         } else {
+
             this.variables.set(id, new Simbolo(value, id, type));
         }
     }

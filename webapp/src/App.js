@@ -10,7 +10,19 @@ function App() {
   }
 
   function showValue() {
-    console.log(editorRef.current.getValue());
+    const url = "http://localhost:9000/grammar";
+    const data = {"data": editorRef.current.getValue()}
+    console.log(data);
+
+    fetch(url, {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(res => console.log('Success:', res));
   }
 
   return (
@@ -23,19 +35,19 @@ function App() {
           className="d-flex justify-content-around"
           height="72vh"
           theme="vs-dark"
-          defaultLanguage="javascript"
+          defaultLanguage="java"
           defaultValue="// empieza a escribir tu código..."
           onMount={handleEditorDidMount}
         />
-        <div class="d-flex justify-content-between">
+        <div className="d-flex justify-content-between">
           <div className="d-flex justify-content-end">
-            <button type="button" class="btn btn-warning">
+            <button type="button" className="btn btn-warning">
               Abrir
             </button>
-            <button type="button" class="btn btn-primary">
+            <button type="button" className="btn btn-primary">
               Crear
             </button>
-            <button type="button" class="btn btn-success">
+            <button type="button" className="btn btn-success">
               Guardar
             </button>
           </div>

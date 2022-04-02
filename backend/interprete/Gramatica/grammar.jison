@@ -96,7 +96,7 @@
 
 // expresiones regulares
 "\""[^\"]*"\""				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
-("\'")("\\".)|(.)("\'")		{ yytext = yytext.substr(1,yyleng-2); return 'CARACTER'; }
+'((.)|(\\.))'\b         	{ yytext = yytext.substr(1,yyleng-2); return 'CARACTER'; }
 [0-9]+("."[0-9]+)?\b  	    return 'DECIMAL';
 [0-9]+\b				    return 'ENTERO';
 ([a-zA-Z_])[a-zA-Z0-9_]*	return 'IDENTIFICADOR';
@@ -105,14 +105,15 @@
 
 /lex
 
-%right UNMENOS
-%left 'POTENCIA'
-%left 'DIVISION' 'MULTIPLICACION'
-%left 'SUMA' 'RESTA'
+%left 'OR'
+%left 'AND'
+%right 'NOT'
 %left 'MODULO' casteo
 %left 'IGUAL' 'DESIGUAL' 'MENOR' 'MENOR_IGUAL' 'MAYOR' 'MAYOR_IGUAL'
-%right 'NOT'
-%left 'AND' 'OR' 
+%left 'SUMA' 'RESTA'
+%left 'MULTIPLICACION' 'DIVISION'
+%left 'POTENCIA'
+%right UNMENOS
 
 %start ini
 
@@ -122,6 +123,7 @@ ini
     : instrucciones EOF {
         return $1;
     }
+    | EOF
 ;
 
 instrucciones
@@ -136,7 +138,7 @@ instruccion
 ;
 
 tipo 
-    : INT
+    : INT     
     | DOUBLE
     | BOOLEAN
     | CHAR
@@ -144,8 +146,8 @@ tipo
 ;
 
 declaracion 
-    : tipo identificadores ASIGNACION expresion { $$ = new Declaracion($2, $4, @1.first_line, @1.first_column) }
-    | tipo identificadores                      { $$ = new Declaracion($2, null, @1.first_line, @1.first_column) }
+    : tipo identificadores ASIGNACION expresion { $$ = new Declaracion($1, $2, $4, @1.first_line, @1.first_column) }
+    | tipo identificadores                      { $$ = new Declaracion($1, $2, null, @1.first_line, @1.first_column) }
 ;
 
 asignacion_simple

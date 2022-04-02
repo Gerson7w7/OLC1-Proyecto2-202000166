@@ -11,6 +11,7 @@ class Scope {
     }
     crearVar(id, value, type, linea, columna) {
         let scope = this;
+        console.log("valor: " + value);
         while (scope != null) {
             if (scope.variables.has(id)) {
                 throw new _Error_1._Error(linea, columna, "Semántico", "La variable " + id + " ya ha sido declarada.");
@@ -18,6 +19,7 @@ class Scope {
             scope = scope.padre;
         }
         if (value == null) {
+            console.log("toy aki");
             if (type == Retorno_1.Tipo.ENTERO) {
                 this.variables.set(id, new Simbolo_1.Simbolo(0, id, type));
             }

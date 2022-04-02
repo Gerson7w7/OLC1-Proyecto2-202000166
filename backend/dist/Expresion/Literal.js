@@ -27,7 +27,7 @@ class Literal extends Expresion_1.Expresion {
             return { value: this.value.toString(), type: Retorno_1.Tipo.CARACTER };
         }
         else if (this.tipo == TipoLiteral.CADENA) {
-            return { value: this.value.toString(), type: Retorno_1.Tipo.CARACTER };
+            return { value: this.value.toString(), type: Retorno_1.Tipo.CADENA };
         }
         throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Error");
     }

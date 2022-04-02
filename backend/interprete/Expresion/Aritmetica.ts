@@ -13,8 +13,7 @@ export class Aritmetica extends Expresion {
         const valorIzquierda = this.izquierda.ejecutar(scope);
         const valorDerecha = this.derecha.ejecutar(scope);
         let dominante;
-
-        if (this.tipo == TipoAritmetica.SUMA) {
+        if (this.tipo == TipoAritmetica.SUMA) {           
             dominante = this.tipoDominanteSuma(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
                 return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.ENTERO };
@@ -28,18 +27,18 @@ export class Aritmetica extends Expresion {
         } else if (this.tipo == TipoAritmetica.RESTA) {
             dominante = this.tipoDominanteResta(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.ENTERO };
+                return { value: (valorIzquierda.value - valorDerecha.value), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.DECIMAL };
+                return { value: (valorIzquierda.value - valorDerecha.value), type: Tipo.DECIMAL };
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador -.");
             }
         } else if (this.tipo == TipoAritmetica.MULTIPLICACION) {
             dominante = this.tipoDominanteMultiplicacion(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.ENTERO };
+                return { value: (valorIzquierda.value * valorDerecha.value), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.DECIMAL };
+                return { value: (valorIzquierda.value * valorDerecha.value), type: Tipo.DECIMAL };
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador *.");
             }
@@ -47,29 +46,32 @@ export class Aritmetica extends Expresion {
             dominante = this.tipoDominanteDivision(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
                 if (valorDerecha.value != 0) {
-                    return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.ENTERO };
+                    return { value: (valorIzquierda.value / valorDerecha.value), type: Tipo.ENTERO };
                 }
                 throw new _Error(this.linea, this.columna, "Semántico", "Valor indeterminado. No se puede operar " + valorIzquierda.value + " entre 0.");
             } else if (dominante == Tipo.DECIMAL) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.DECIMAL };
+                if (valorDerecha.value != 0) {
+                    return { value: (valorIzquierda.value / valorDerecha.value), type: Tipo.DECIMAL };
+                }
+                throw new _Error(this.linea, this.columna, "Semántico", "Valor indeterminado. No se puede operar " + valorIzquierda.value + " entre 0.");
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador /.");
             }
         } else if (this.tipo == TipoAritmetica.POTENCIA) {
             dominante = this.tipoDominantePotencia(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.ENTERO };
+                return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.DECIMAL };
+                return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Tipo.DECIMAL };
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador ^.");
             }
         } else if (this.tipo == TipoAritmetica.MODULO) {
             dominante = this.tipoDominanteModulo(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.ENTERO };
+                return { value: (valorIzquierda.value % valorDerecha.value), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.DECIMAL };
+                return { value: (valorIzquierda.value % valorDerecha.value), type: Tipo.DECIMAL };
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador %.");
             }
