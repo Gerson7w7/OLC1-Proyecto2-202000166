@@ -97,7 +97,7 @@
 // expresiones regulares
 "\""[^\"]*"\""				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
 '((.)|(\\.))'\b         	{ yytext = yytext.substr(1,yyleng-2); return 'CARACTER'; }
-[0-9]+("."[0-9]+)?\b  	    return 'DECIMAL';
+[0-9]+("."[0-9]+)\b  	    return 'DECIMAL';
 [0-9]+\b				    return 'ENTERO';
 ([a-zA-Z_])[a-zA-Z0-9_]*	return 'IDENTIFICADOR';
 <<EOF>>				        return 'EOF';
