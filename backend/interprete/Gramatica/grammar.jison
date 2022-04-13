@@ -48,10 +48,10 @@
 // operadores relacionales
 "=="                        return 'IGUAL';
 "!="                        return 'DESIGUAL';
-"<"                         return 'MENOR';
 "<="                        return 'MENOR_IGUAL';
-">"                         return 'MAYOR';
+"<"                         return 'MENOR';
 ">="                        return 'MAYOR_IGUAL';
+">"                         return 'MAYOR';
 
 // operadores lógicos
 "||"                        return 'OR';
