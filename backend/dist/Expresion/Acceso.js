@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Acesso = void 0;
+exports.Acceso = void 0;
 const _Error_1 = require("../Error/_Error");
 const Expresion_1 = require("./Expresion");
-class Acesso extends Expresion_1.Expresion {
+class Acceso extends Expresion_1.Expresion {
     constructor(id, linea, columna) {
         super(linea, columna);
         this.id = id;
@@ -16,5 +16,5 @@ class Acesso extends Expresion_1.Expresion {
         throw new _Error_1._Error(this.linea, this.columna, 'Semántico', 'No se ha declarado la variable ' + value.id);
     }
 }
-exports.Acesso = Acesso;
+exports.Acceso = Acceso;
 //# sourceMappingURL=Acceso.js.map

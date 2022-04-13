@@ -16,8 +16,12 @@ export class Aritmetica extends Expresion {
         if (this.tipo == TipoAritmetica.SUMA) {           
             dominante = this.tipoDominanteSuma(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value + valorDerecha.value), type: Tipo.DECIMAL };
             } else if (dominante == Tipo.CADENA) {
                 return { value: (valorIzquierda.value.toString() + valorDerecha.value.toString()), type: Tipo.CADENA };
@@ -27,8 +31,12 @@ export class Aritmetica extends Expresion {
         } else if (this.tipo == TipoAritmetica.RESTA) {
             dominante = this.tipoDominanteResta(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value - valorDerecha.value), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value - valorDerecha.value), type: Tipo.DECIMAL };
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador -.");
@@ -36,8 +44,12 @@ export class Aritmetica extends Expresion {
         } else if (this.tipo == TipoAritmetica.MULTIPLICACION) {
             dominante = this.tipoDominanteMultiplicacion(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value * valorDerecha.value), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value * valorDerecha.value), type: Tipo.DECIMAL };
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador *.");
@@ -45,11 +57,15 @@ export class Aritmetica extends Expresion {
         } else if (this.tipo == TipoAritmetica.DIVISION) {
             dominante = this.tipoDominanteDivision(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 if (valorDerecha.value != 0) {
                     return { value: (valorIzquierda.value / valorDerecha.value), type: Tipo.ENTERO };
                 }
                 throw new _Error(this.linea, this.columna, "Semántico", "Valor indeterminado. No se puede operar " + valorIzquierda.value + " entre 0.");
             } else if (dominante == Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 if (valorDerecha.value != 0) {
                     return { value: (valorIzquierda.value / valorDerecha.value), type: Tipo.DECIMAL };
                 }
@@ -60,8 +76,12 @@ export class Aritmetica extends Expresion {
         } else if (this.tipo == TipoAritmetica.POTENCIA) {
             dominante = this.tipoDominantePotencia(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Tipo.DECIMAL };
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador ^.");
@@ -69,14 +89,31 @@ export class Aritmetica extends Expresion {
         } else if (this.tipo == TipoAritmetica.MODULO) {
             dominante = this.tipoDominanteModulo(valorIzquierda.type, valorDerecha.type);
             if (dominante == Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value % valorDerecha.value), type: Tipo.ENTERO };
             } else if (dominante == Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value % valorDerecha.value), type: Tipo.DECIMAL };
             } else {
                 throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador %.");
             }
         }
         throw new _Error(this.linea, this.columna, "Semántico", "Error");
+    }
+
+    public convertirNumero(value: any): number {
+        if (typeof(value) === 'string') {
+            value = value.charCodeAt(0);
+        } else if (typeof(value) === 'boolean') {
+            if (value == true) {
+                value = 1;
+            } else {
+                value = 0;
+            }
+        }
+        return value;
     }
 }
 

@@ -1,9 +1,11 @@
 import Editor from "@monaco-editor/react";
 import "./App.css";
 import React, { useRef } from "react";
+import { useState } from "react";
 
 function App() {
   const editorRef = useRef(null);
+  const [salida, setSalida] = useState("");
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
@@ -11,7 +13,7 @@ function App() {
 
   function showValue() {
     const url = "http://localhost:9000/grammar";
-    const data = {"data": editorRef.current.getValue()}
+    const data = {"data": editorRef.current.getValue().toLowerCase()}
     console.log(data);
 
     fetch(url, {
@@ -22,7 +24,7 @@ function App() {
       }
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
-    .then(res => console.log('Success:', res));
+    .then(res => setSalida(res.salida));
   }
 
   return (
@@ -64,6 +66,7 @@ function App() {
           className="form-control"
           id="terminal"
           rows="10"
+          value={ salida }
           disabled
         ></textarea>
       </div>

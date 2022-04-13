@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TipoRelacional = exports.Literal = void 0;
+exports.TipoRelacional = exports.Relacional = void 0;
 const _Error_1 = require("../Error/_Error");
 const Expresion_1 = require("./Expresion");
 const Retorno_1 = require("./Retorno");
-class Literal extends Expresion_1.Expresion {
+class Relacional extends Expresion_1.Expresion {
     constructor(izquierda, derecha, tipo, linea, columna) {
         super(linea, columna);
         this.izquierda = izquierda;
@@ -36,28 +36,39 @@ class Literal extends Expresion_1.Expresion {
         else if (valorIzquierda.type == Retorno_1.Tipo.CARACTER && valorDerecha.type == Retorno_1.Tipo.CARACTER) {
             permitido = true;
         }
-        if (this.tipo == TipoRelacional.IGUAL && permitido == true) {
-            return { value: (valorIzquierda.value == valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+        else if (valorIzquierda.type == Retorno_1.Tipo.CADENA && valorDerecha.type == Retorno_1.Tipo.CADENA) {
+            permitido = true;
         }
-        else if (this.tipo == TipoRelacional.DESIGUAL && permitido == true) {
-            return { value: (valorIzquierda.value != valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+        else if (valorIzquierda.type == Retorno_1.Tipo.BOOLEAN && valorDerecha.type == Retorno_1.Tipo.BOOLEAN) {
+            permitido = true;
         }
-        else if (this.tipo == TipoRelacional.MENOR && permitido == true) {
-            return { value: (valorIzquierda.value < valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+        if (permitido) {
+            if (this.tipo == TipoRelacional.IGUAL) {
+                return { value: (valorIzquierda.value == valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+            }
+            else if (this.tipo == TipoRelacional.DESIGUAL) {
+                return { value: (valorIzquierda.value != valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+            }
+            else if (this.tipo == TipoRelacional.MENOR) {
+                return { value: (valorIzquierda.value < valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+            }
+            else if (this.tipo == TipoRelacional.MENOR_IGUAL) {
+                return { value: (valorIzquierda.value <= valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+            }
+            else if (this.tipo == TipoRelacional.MAYOR) {
+                return { value: (valorIzquierda.value > valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+            }
+            else if (this.tipo == TipoRelacional.MAYOR_IGUAL) {
+                return { value: (valorIzquierda.value >= valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+            }
+            throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Error");
         }
-        else if (this.tipo == TipoRelacional.MENOR_IGUAL && permitido == true) {
-            return { value: (valorIzquierda.value <= valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+        else {
+            throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Relaciones incompatibles, no se puede comparar " + valorIzquierda.value + " con " + valorDerecha.value);
         }
-        else if (this.tipo == TipoRelacional.MAYOR && permitido == true) {
-            return { value: (valorIzquierda.value > valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
-        }
-        else if (this.tipo == TipoRelacional.MAYOR_IGUAL && permitido == true) {
-            return { value: (valorIzquierda.value >= valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
-        }
-        throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Error");
     }
 }
-exports.Literal = Literal;
+exports.Relacional = Relacional;
 var TipoRelacional;
 (function (TipoRelacional) {
     TipoRelacional[TipoRelacional["IGUAL"] = 0] = "IGUAL";

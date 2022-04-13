@@ -32,11 +32,16 @@ class Declaracion extends Instruccion_1.Instruccion {
         for (const id of this.ids) {
             if (this.value != null) {
                 const val = this.value.ejecutar(scope);
-                if (val.type == tipo) {
-                    scope.crearVar(id, val.value, val.type, this.linea, this.columna);
+                if (!(val.value instanceof Array)) {
+                    if (val.type == tipo) {
+                        scope.crearVar(id, val.value, val.type, this.linea, this.columna);
+                    }
+                    else {
+                        throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. " + "Se espera un " + Retorno_1.Tipo[tipo] + ", y se encontró " + Retorno_1.Tipo[val.type]);
+                    }
                 }
                 else {
-                    throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. " + "Se espera un " + Retorno_1.Tipo[tipo] + ", y se encontró " + Retorno_1.Tipo[val.type]);
+                    throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. " + "No se puede asignar un vector en una variable.");
                 }
             }
             else {
@@ -44,6 +49,7 @@ class Declaracion extends Instruccion_1.Instruccion {
                 scope.crearVar(id, null, tipo, this.linea, this.columna);
             }
         }
+        return null;
     }
 }
 exports.Declaracion = Declaracion;
@@ -55,7 +61,11 @@ class AsignacionSimple extends Instruccion_1.Instruccion {
     }
     ejecutar(scope) {
         const val = this.value.ejecutar(scope);
+        if (val.value instanceof Array) {
+            throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. " + "No se puede asignar un vector en una variable.");
+        }
         scope.setValor(this.id, val.value, val.type, this.linea, this.columna);
+        return null;
     }
 }
 exports.AsignacionSimple = AsignacionSimple;

@@ -3,8 +3,8 @@ import { Scope } from "../Extra/Scope";
 import { Expresion } from "./Expresion";
 import { Retorno } from "./Retorno";
 
-export class Acesso extends Expresion {
-    constructor(private id: string, linea: number, columna: number) {
+export class Acceso extends Expresion {
+    constructor(public id: string, linea: number, columna: number) {
         super(linea, columna);
     }
 

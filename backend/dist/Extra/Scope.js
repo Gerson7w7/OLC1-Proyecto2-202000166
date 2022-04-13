@@ -11,7 +11,7 @@ class Scope {
     }
     crearVar(id, value, type, linea, columna) {
         let scope = this;
-        console.log("valor: " + value);
+        //console.log("valor: " + value);
         while (scope != null) {
             if (scope.variables.has(id)) {
                 throw new _Error_1._Error(linea, columna, "Semántico", "La variable " + id + " ya ha sido declarada.");
@@ -24,7 +24,7 @@ class Scope {
                 this.variables.set(id, new Simbolo_1.Simbolo(0, id, type));
             }
             else if (type == Retorno_1.Tipo.DECIMAL) {
-                this.variables.set(id, new Simbolo_1.Simbolo(0.0, id, type));
+                this.variables.set(id, new Simbolo_1.Simbolo((0).toFixed(1), id, type));
             }
             else if (type == Retorno_1.Tipo.CADENA) {
                 this.variables.set(id, new Simbolo_1.Simbolo("", id, type));
@@ -47,6 +47,40 @@ class Scope {
                 const val = scope.variables.get(id);
                 if (val.type == type) {
                     scope.variables.set(id, new Simbolo_1.Simbolo(value, id, type));
+                }
+                else {
+                    throw new _Error_1._Error(linea, columna, "Semántico", "Tipos incompatibles, " + type + " no puede convertirse a " + val.type);
+                }
+            }
+            scope = scope.padre;
+        }
+    }
+    setValorVector(id, value, posicion, type, linea, columna) {
+        let scope = this;
+        while (scope != null) {
+            if (scope.variables.has(id)) {
+                const val = scope.variables.get(id);
+                if (val.type == type) {
+                    if (posicion.length == 1) {
+                        if (val.valor.length <= posicion[0]) {
+                            throw new _Error_1._Error(linea, columna, 'Semántico', 'No se puede asignar el valor. La posición [' + posicion[0] + '] no existe.');
+                        }
+                        val.valor[posicion[0]] = value;
+                        scope.variables.set(id, new Simbolo_1.Simbolo(val.valor, id, type));
+                    }
+                    else if (posicion.length == 2) {
+                        if ((val.valor.length <= posicion[0]) || (val.valor[0].length <= posicion[1])) {
+                            throw new _Error_1._Error(linea, columna, 'Semántico', 'No se puede asignar el valor. La posición [' + posicion[0] + '][' + posicion[1] + '] no existe.');
+                        }
+                        else if (value instanceof Array) {
+                            throw new _Error_1._Error(linea, columna, "Semántico", "No se puede asignar un vector a esta posición. Se ha llegado al máximo de dimensiones (2)");
+                        }
+                        val.valor[posicion[0]][posicion[1]] = value;
+                        scope.variables.set(id, new Simbolo_1.Simbolo(val.valor, id, type));
+                    }
+                    else {
+                        throw new _Error_1._Error(linea, columna, "Semántico", "No se puede acceder a un vector de " + posicion.length + " dimensiones.");
+                    }
                 }
                 else {
                     throw new _Error_1._Error(linea, columna, "Semántico", "Tipos incompatibles, " + type + " no puede convertirse a " + val.type);

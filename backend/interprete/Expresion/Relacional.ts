@@ -3,7 +3,7 @@ import { Scope } from "../Extra/Scope";
 import { Expresion } from "./Expresion";
 import { Retorno, Tipo } from "./Retorno";
 
-export class Literal extends Expresion {
+export class Relacional extends Expresion {
     constructor(private izquierda: Expresion, private derecha: Expresion, private tipo: TipoRelacional, linea: number, columna: number) {
         super(linea, columna);
     }
@@ -27,22 +27,30 @@ export class Literal extends Expresion {
             permitido = true;
         } else if (valorIzquierda.type == Tipo.CARACTER && valorDerecha.type == Tipo.CARACTER) {
             permitido = true;
+        } else if (valorIzquierda.type == Tipo.CADENA && valorDerecha.type == Tipo.CADENA) {
+            permitido = true;
+        } else if (valorIzquierda.type == Tipo.BOOLEAN && valorDerecha.type == Tipo.BOOLEAN) {
+            permitido = true;
         }
 
-        if (this.tipo == TipoRelacional.IGUAL && permitido == true) {
-            return { value: (valorIzquierda.value == valorDerecha.value), type: Tipo.BOOLEAN };
-        } else if (this.tipo == TipoRelacional.DESIGUAL && permitido == true) {
-            return { value: (valorIzquierda.value != valorDerecha.value), type: Tipo.BOOLEAN };
-        } else if (this.tipo == TipoRelacional.MENOR && permitido == true) {
-            return { value: (valorIzquierda.value < valorDerecha.value), type: Tipo.BOOLEAN };
-        } else if (this.tipo == TipoRelacional.MENOR_IGUAL && permitido == true) {
-            return { value: (valorIzquierda.value <= valorDerecha.value), type: Tipo.BOOLEAN };
-        } else if (this.tipo == TipoRelacional.MAYOR && permitido == true) {
-            return { value: (valorIzquierda.value > valorDerecha.value), type: Tipo.BOOLEAN };
-        } else if (this.tipo == TipoRelacional.MAYOR_IGUAL && permitido == true) {
-            return { value: (valorIzquierda.value >= valorDerecha.value), type: Tipo.BOOLEAN };
-        }
-        throw new _Error(this.linea, this.columna, "Semántico", "Error");
+        if (permitido) {
+            if (this.tipo == TipoRelacional.IGUAL) {
+                return { value: (valorIzquierda.value == valorDerecha.value), type: Tipo.BOOLEAN };
+            } else if (this.tipo == TipoRelacional.DESIGUAL) {
+                return { value: (valorIzquierda.value != valorDerecha.value), type: Tipo.BOOLEAN };
+            } else if (this.tipo == TipoRelacional.MENOR) {
+                return { value: (valorIzquierda.value < valorDerecha.value), type: Tipo.BOOLEAN };
+            } else if (this.tipo == TipoRelacional.MENOR_IGUAL) {
+                return { value: (valorIzquierda.value <= valorDerecha.value), type: Tipo.BOOLEAN };
+            } else if (this.tipo == TipoRelacional.MAYOR) {
+                return { value: (valorIzquierda.value > valorDerecha.value), type: Tipo.BOOLEAN };
+            } else if (this.tipo == TipoRelacional.MAYOR_IGUAL) {
+                return { value: (valorIzquierda.value >= valorDerecha.value), type: Tipo.BOOLEAN };
+            }
+            throw new _Error(this.linea, this.columna, "Semántico", "Error");
+        } else {
+            throw new _Error(this.linea, this.columna, "Semántico", "Relaciones incompatibles, no se puede comparar " + valorIzquierda.value + " con " + valorDerecha.value);
+        }    
     }
 }
 

@@ -1,4 +1,5 @@
 import { Scope } from "../Extra/Scope";
+import { Retorno } from "./Retorno";
 
 export abstract class Instruccion {
     public linea: number;
@@ -9,5 +10,5 @@ export abstract class Instruccion {
         this.columna = columna;
     }
 
-    public abstract ejecutar(scope: Scope): void;
+    public abstract ejecutar(scope: Scope): Retorno;
 }

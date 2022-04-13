@@ -19,9 +19,13 @@ class Aritmetica extends Expresion_1.Expresion {
         if (this.tipo == TipoAritmetica.SUMA) {
             dominante = this.tipoDominanteSuma(valorIzquierda.type, valorDerecha.type);
             if (dominante == Retorno_1.Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
             }
             else if (dominante == Retorno_1.Tipo.CADENA) {
@@ -34,9 +38,13 @@ class Aritmetica extends Expresion_1.Expresion {
         else if (this.tipo == TipoAritmetica.RESTA) {
             dominante = this.tipoDominanteResta(valorIzquierda.type, valorDerecha.type);
             if (dominante == Retorno_1.Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
             }
             else {
@@ -46,9 +54,13 @@ class Aritmetica extends Expresion_1.Expresion {
         else if (this.tipo == TipoAritmetica.MULTIPLICACION) {
             dominante = this.tipoDominanteMultiplicacion(valorIzquierda.type, valorDerecha.type);
             if (dominante == Retorno_1.Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
             }
             else {
@@ -58,12 +70,16 @@ class Aritmetica extends Expresion_1.Expresion {
         else if (this.tipo == TipoAritmetica.DIVISION) {
             dominante = this.tipoDominanteDivision(valorIzquierda.type, valorDerecha.type);
             if (dominante == Retorno_1.Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 if (valorDerecha.value != 0) {
                     return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
                 }
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Valor indeterminado. No se puede operar " + valorIzquierda.value + " entre 0.");
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 if (valorDerecha.value != 0) {
                     return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
                 }
@@ -76,9 +92,13 @@ class Aritmetica extends Expresion_1.Expresion {
         else if (this.tipo == TipoAritmetica.POTENCIA) {
             dominante = this.tipoDominantePotencia(valorIzquierda.type, valorDerecha.type);
             if (dominante == Retorno_1.Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.ENTERO };
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.DECIMAL };
             }
             else {
@@ -88,9 +108,13 @@ class Aritmetica extends Expresion_1.Expresion {
         else if (this.tipo == TipoAritmetica.MODULO) {
             dominante = this.tipoDominanteModulo(valorIzquierda.type, valorDerecha.type);
             if (dominante == Retorno_1.Tipo.ENTERO) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
+                valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
+                valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
             }
             else {
@@ -98,6 +122,20 @@ class Aritmetica extends Expresion_1.Expresion {
             }
         }
         throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Error");
+    }
+    convertirNumero(value) {
+        if (typeof (value) === 'string') {
+            value = value.charCodeAt(0);
+        }
+        else if (typeof (value) === 'boolean') {
+            if (value == true) {
+                value = 1;
+            }
+            else {
+                value = 0;
+            }
+        }
+        return value;
     }
 }
 exports.Aritmetica = Aritmetica;
