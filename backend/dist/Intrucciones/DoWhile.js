@@ -1,27 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.While = void 0;
-const _Error_1 = require("../Error/_Error");
-const Retorno_1 = require("../Expresion/Retorno");
-const Instruccion_1 = require("./Instruccion");
+exports.DoWhile = void 0;
 const Transferencias_1 = require("./Transferencias");
-class While extends Instruccion_1.Instruccion {
-    constructor(condicion, bloque, linea, columna) {
+const _Error_1 = require("./../Error/_Error");
+const Retorno_1 = require("./../Expresion/Retorno");
+const Instruccion_1 = require("./Instruccion");
+class DoWhile extends Instruccion_1.Instruccion {
+    constructor(bloque, condicion, linea, columna) {
         super(linea, columna);
-        this.condicion = condicion;
         this.bloque = bloque;
+        this.condicion = condicion;
     }
     ejecutar(scope) {
-        // ejecutamos la condición
         // esta vez con let, ya que la ejecutaremos varias veces hasta que deje de cumplirse la condicion
-        let value = this.condicion.ejecutar(scope);
-        // comprobamos si nos devuelve un boolean
-        if (value.type != Retorno_1.Tipo.BOOLEAN) {
-            throw new _Error_1._Error(this.linea, this.columna, "Semántico", "La condición a evaluar tiene que retornar BOOLEAN, y se obtuvo " + Retorno_1.Tipo[value.type]);
-        }
+        let value;
         let salida = "";
-        // mientras value.value == true
-        while (value.value) {
+        // ejecutando el bloque por lo menos una vez
+        do {
             const retorno = this.bloque.ejecutar(scope);
             // verificamos si hay sentencias de transferencias
             if (retorno != null && retorno != undefined) {
@@ -49,9 +44,9 @@ class While extends Instruccion_1.Instruccion {
             if (value.type != Retorno_1.Tipo.BOOLEAN) {
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "La condición a evaluar tiene que retornar BOOLEAN, y se obtuvo " + Retorno_1.Tipo[value.type]);
             }
-        }
+        } while (value.value); // mientras value.value == true
         return { output: salida, transferencia: null };
     }
 }
-exports.While = While;
-//# sourceMappingURL=While.js.map
+exports.DoWhile = DoWhile;
+//# sourceMappingURL=DoWhile.js.map

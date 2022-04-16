@@ -1,27 +1,22 @@
-import { _Error } from "../Error/_Error";
+import { TipoTransferencia } from './Transferencias';
+import { _Error } from './../Error/_Error';
+import { Tipo } from './../Expresion/Retorno';
 import { Expresion } from "../Expresion/Expresion";
-import { Tipo } from "../Expresion/Retorno";
 import { Scope } from "../Extra/Scope";
 import { Instruccion } from "./Instruccion";
 import { Retorno } from "./Retorno";
-import { TipoTransferencia } from "./Transferencias";
 
-export class While extends Instruccion {
-    constructor(private condicion: Expresion, private bloque: Instruccion, linea: number, columna: number) {
+export class DoWhile extends Instruccion {
+    constructor(private bloque: Instruccion, private condicion: Expresion, linea: number, columna: number) {
         super(linea, columna);
     }
 
     public ejecutar(scope: Scope): Retorno {
-        // ejecutamos la condición
         // esta vez con let, ya que la ejecutaremos varias veces hasta que deje de cumplirse la condicion
-        let value = this.condicion.ejecutar(scope);
-        // comprobamos si nos devuelve un boolean
-        if (value.type != Tipo.BOOLEAN) {
-            throw new _Error(this.linea, this.columna, "Semántico", "La condición a evaluar tiene que retornar BOOLEAN, y se obtuvo " + Tipo[value.type]);
-        }
+        let value;
         let salida: string = "";
-        // mientras value.value == true
-        while (value.value) {
+        // ejecutando el bloque por lo menos una vez
+        do {
             const retorno = this.bloque.ejecutar(scope);
             // verificamos si hay sentencias de transferencias
             if (retorno != null && retorno != undefined) {
@@ -47,7 +42,7 @@ export class While extends Instruccion {
             if (value.type != Tipo.BOOLEAN) {
                 throw new _Error(this.linea, this.columna, "Semántico", "La condición a evaluar tiene que retornar BOOLEAN, y se obtuvo " + Tipo[value.type]);
             }
-        }
+        } while (value.value); // mientras value.value == true
         return { output: salida, transferencia: null };
     }
 }

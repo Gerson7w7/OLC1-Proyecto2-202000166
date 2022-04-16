@@ -17,6 +17,7 @@
     const { Break, Continue } = require("../Intrucciones/Transferencias");
     const { Switch, Case, Default } = require("../Intrucciones/Switch");
     const { For } = require("../Intrucciones/For");
+    const { DoWhile } = require("../Intrucciones/DoWhile")
 %}
 
 %lex
@@ -159,6 +160,7 @@ instruccion
     | while
     | switch
     | for
+    | do-while
     // sentencias de transferencia
     | BREAK PUNTO_COMA                      { $$ = new Break(@1.first_line, @1.first_column) }
     | CONTINUE PUNTO_COMA                   { $$ = new Continue(@1.first_line, @1.first_column) }
@@ -222,6 +224,9 @@ expresion
     | casteo expresion                                      { $$ = new Casteo($1, $2, @1.first_line, @1.first_column) }
     // incrementos y decremetos
     | incremento_decremento                                 { $$ = $1 }
+    // funciones nativas
+    | TOUPPER PARENTESIS_ABRE expresion PARENTESIS_CIERRA    
+    | TOLOWER PARENTESIS_ABRE expresion PARENTESIS_CIERRA
 ;
 
 imprimir
@@ -327,4 +332,8 @@ for1
 for2
     : asignacion_simple     { $$ = $1 }
     | expresion             { $$ = $1 }
+;
+
+do-while
+    : DO bloque WHILE condicion PUNTO_COMA  { $$ = new DoWhile($2, $4, @1.first_line, @1.first_column) }
 ;
