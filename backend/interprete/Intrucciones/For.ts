@@ -12,10 +12,12 @@ export class For extends Instruccion {
     }
 
     public ejecutar(scope: Scope): Retorno {
+        // un nuevo scope
+        const newScope = new Scope(scope);
         // ejecutamos la declaracion o asignacion
-        this.id.ejecutar(scope);
+        this.id.ejecutar(newScope);
         // ejecutamos la condicion
-        let valCondicion = this.condicion.ejecutar(scope);
+        let valCondicion = this.condicion.ejecutar(newScope);
         // comprobamos si nos devuelve un boolean
         if (valCondicion.type != Tipo.BOOLEAN) {
             throw new _Error(this.linea, this.columna, "Semántico", "La condición a evaluar tiene que retornar BOOLEAN, y se obtuvo " + Tipo[valCondicion.type]);
@@ -24,7 +26,7 @@ export class For extends Instruccion {
         // simulando el for
         while (valCondicion.value) {
             // ejecutamos el código dentro del bloque
-            const retorno = this.bloque.ejecutar(scope);
+            const retorno = this.bloque.ejecutar(newScope);
             // verificamos si hay sentencias de transferencias
             if (retorno != null && retorno != undefined) {
                 if (retorno.transferencia != null) {
@@ -38,6 +40,11 @@ export class For extends Instruccion {
                             salida += retorno.output;
                         }
                         continue;
+                    } else if (retorno.transferencia.type == TipoTransferencia.RETURN) {
+                        if (retorno.output != null) {
+                            salida += retorno.output;
+                        }
+                        return { output: salida, transferencia: retorno.transferencia, retorno: retorno.retorno };
                     }
                 } else if (retorno.output != null) {
                     salida += retorno.output;
@@ -45,10 +52,10 @@ export class For extends Instruccion {
             }
 
             // ejecutamos la actualización
-            this.actualizacion.ejecutar(scope);
+            this.actualizacion.ejecutar(newScope);
             // ejecutamos otra vez la condicion
-            valCondicion = this.condicion.ejecutar(scope);
+            valCondicion = this.condicion.ejecutar(newScope);
         }
-        return { output:salida, transferencia: null};
+        return { output:salida, transferencia: null, retorno: null};
     }
 }

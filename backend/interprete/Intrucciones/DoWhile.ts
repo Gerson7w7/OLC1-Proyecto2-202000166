@@ -31,6 +31,11 @@ export class DoWhile extends Instruccion {
                             salida += retorno.output;
                         }
                         continue;
+                    } else if (retorno.transferencia.type == TipoTransferencia.RETURN) {
+                        if (retorno.output != null) {
+                            salida += retorno.output;
+                        }
+                        return { output: salida, transferencia: retorno.transferencia, retorno: retorno.retorno };
                     }
                 } else if (retorno.output != null) {
                     salida += retorno.output;
@@ -43,6 +48,6 @@ export class DoWhile extends Instruccion {
                 throw new _Error(this.linea, this.columna, "Semántico", "La condición a evaluar tiene que retornar BOOLEAN, y se obtuvo " + Tipo[value.type]);
             }
         } while (value.value); // mientras value.value == true
-        return { output: salida, transferencia: null };
+        return { output: salida, transferencia: null, retorno: null };
     }
 }

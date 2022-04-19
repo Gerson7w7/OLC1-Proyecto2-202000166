@@ -14,10 +14,18 @@
     const { Bloque } = require("../Intrucciones/Bloque");
     const { IfElse } = require("../Intrucciones/IfElse");
     const { While } = require("../Intrucciones/While");
-    const { Break, Continue } = require("../Intrucciones/Transferencias");
+    const { Break, Continue, Return } = require("../Intrucciones/Transferencias");
     const { Switch, Case, Default } = require("../Intrucciones/Switch");
     const { For } = require("../Intrucciones/For");
-    const { DoWhile } = require("../Intrucciones/DoWhile")
+    const { DoWhile } = require("../Intrucciones/DoWhile");
+    const { ToUpperCase, ToLowerCase } = require("../Expresion/ToUpLowCase");
+    const { Round } = require("../Expresion/Round");
+    const { Length } = require("../Expresion/Length");
+    const { TypeOf } = require("../Expresion/TypeOf");
+    const { ToString } = require("../Expresion/ToString");
+    const { ToChararray } = require("../Expresion/ToChararray");
+    const { Funcion } = require("../Intrucciones/Funcion");
+    const { LlamadaFuncion } = require("../Intrucciones/LlamadaFuncion");
 %}
 
 %lex
@@ -87,7 +95,7 @@
 "tolower"                   return 'TOLOWER';
 "toupper"                   return 'TOUPPER';
 "round"                     return 'ROUND';
-"length"                    return 'LENGHT';
+"length"                    return 'LENGTH';
 "typeof"                    return 'TYPEOF';
 "tostring"                  return 'TOSTRING';
 "tochararray"               return 'TOCHARARRAY';
@@ -161,10 +169,14 @@ instruccion
     | switch
     | for
     | do-while
+    | funcion
+    | metodo
+    | llamada_funcion PUNTO_COMA
     // sentencias de transferencia
     | BREAK PUNTO_COMA                      { $$ = new Break(@1.first_line, @1.first_column) }
     | CONTINUE PUNTO_COMA                   { $$ = new Continue(@1.first_line, @1.first_column) }
-    | RETURN PUNTO_COMA
+    | RETURN PUNTO_COMA                     { $$ = new Return(null, @1.first_line, @1.first_column) }
+    | RETURN expresion PUNTO_COMA           { $$ = new Return($2, @1.first_line, @1.first_column) }
 ;
 
 tipo 
@@ -225,8 +237,8 @@ expresion
     // incrementos y decremetos
     | incremento_decremento                                 { $$ = $1 }
     // funciones nativas
-    | TOUPPER PARENTESIS_ABRE expresion PARENTESIS_CIERRA    
-    | TOLOWER PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+    | funciones_nativas                                     { $$ = $1 }
+    | llamada_funcion                                       { $$ = $1 }
 ;
 
 imprimir
@@ -336,4 +348,40 @@ for2
 
 do-while
     : DO bloque WHILE condicion PUNTO_COMA  { $$ = new DoWhile($2, $4, @1.first_line, @1.first_column) }
+;
+
+funciones_nativas
+    : TOUPPER PARENTESIS_ABRE expresion PARENTESIS_CIERRA       { $$ = new ToUpperCase($3, @1.first_line, @1.first_column) }    
+    | TOLOWER PARENTESIS_ABRE expresion PARENTESIS_CIERRA       { $$ = new ToLowerCase($3, @1.first_line, @1.first_column) }
+    | ROUND PARENTESIS_ABRE expresion PARENTESIS_CIERRA         { $$ = new Round($3, @1.first_line, @1.first_column) }
+    | LENGTH PARENTESIS_ABRE expresion PARENTESIS_CIERRA        { $$ = new Length($3, @1.first_line, @1.first_column) }
+    | TYPEOF PARENTESIS_ABRE expresion PARENTESIS_CIERRA        { $$ = new TypeOf($3, @1.first_line, @1.first_column) }
+    | TOSTRING PARENTESIS_ABRE expresion PARENTESIS_CIERRA      { $$ = new ToString($3, @1.first_line, @1.first_column) }
+    | TOCHARARRAY PARENTESIS_ABRE expresion PARENTESIS_CIERRA   { $$ = new ToChararray($3, @1.first_line, @1.first_column) }
+;
+
+funcion
+    : IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA DOS_PUNTOS tipo bloque            { $$ = new Funcion($1, [], $5, $6, @1.first_line, @1.first_column) }   
+    | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA DOS_PUNTOS tipo bloque { $$ = new Funcion($1, $3, $6, $7, @1.first_line, @1.first_column) }
+;
+
+metodo
+    : IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA DOS_PUNTOS VOID bloque            { $$ = new Funcion($1, [], null, $6, @1.first_line, @1.first_column) }
+    | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA DOS_PUNTOS VOID bloque { $$ = new Funcion($1, $3, null, $7, @1.first_line, @1.first_column) }
+    | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA bloque                            { $$ = new Funcion($1, [], null, $4, @1.first_line, @1.first_column) }
+    | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA bloque                 { $$ = new Funcion($1, $3, null, $5, @1.first_line, @1.first_column) }
+;
+
+parametros
+    : parametros COMA parametros2   { $1.push($3); $$ = $1; }
+    | parametros2                   { $$ = [$1]; }
+;
+
+parametros2
+    : tipo IDENTIFICADOR    { $$ = new Declaracion($1, [$2], null, @1.first_line, @1.first_column) }
+;
+
+llamada_funcion
+    : IDENTIFICADOR PARENTESIS_ABRE lista_expresiones PARENTESIS_CIERRA { $$ = new LlamadaFuncion($1, $3, @1.first_line, @1.first_column) }
+    | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA                   { $$ = new LlamadaFuncion($1, [], @1.first_line, @1.first_column) }
 ;

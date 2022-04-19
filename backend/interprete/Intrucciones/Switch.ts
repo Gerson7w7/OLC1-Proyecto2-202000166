@@ -37,7 +37,7 @@ export class Switch extends Instruccion {
                                 if (resultado.output != null) {
                                     salida += resultado.output;
                                 }
-                                return { output: salida, transferencia: { type: resultado.transferencia.type, linea:resultado.transferencia.linea, columna:resultado.transferencia.columna } };
+                                return { output: salida, transferencia: resultado.transferencia, retorno: resultado.retorno };
                             }
                         } else if (resultado.output != null) {
                             // si no hay break se ejecutaran los cases faltantes hasta encontrar un break o el default
@@ -59,7 +59,7 @@ export class Switch extends Instruccion {
                                 salida += resultado.output;
                             }
                             
-                            return { output: salida, transferencia: { type: resultado.transferencia.type, linea:resultado.transferencia.linea, columna:resultado.transferencia.columna } };
+                            return { output: salida, transferencia: resultado.transferencia, retorno: resultado.retorno };
                         } else if (resultado.output != null) {
                             salida += resultado.output;
                         }
@@ -69,7 +69,7 @@ export class Switch extends Instruccion {
                 }
             }
         }
-        return { output: salida, transferencia: null };
+        return { output: salida, transferencia: null, retorno: null };
     }
 }
 

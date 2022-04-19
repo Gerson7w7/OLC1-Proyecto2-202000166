@@ -11,7 +11,7 @@ class Print extends Instruccion_1.Instruccion {
         const val = this.value.ejecutar(scope);
         // aki hay que poner el print en la pagina web, mientras solo le dearemos un console.log
         console.log(val.value);
-        return { output: val.value, transferencia: null };
+        return { output: val.value, transferencia: null, retorno: null };
     }
 }
 exports.Print = Print;
@@ -24,7 +24,7 @@ class Println extends Instruccion_1.Instruccion {
         const val = this.value.ejecutar(scope);
         // aki hay que poner el print en la pagina web, mientras solo le dearemos un console.log
         console.log(val.value);
-        return { output: val.value + "\n", transferencia: null };
+        return { output: val.value + "\n", transferencia: null, retorno: null };
     }
 }
 exports.Println = Println;

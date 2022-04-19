@@ -1,12 +1,15 @@
 import { Tipo } from "../Expresion/Retorno";
 import { Simbolo } from "./Simbolo";
 import { _Error } from "../Error/_Error";
+import { Funcion } from "../Intrucciones/Funcion";
 
 export class Scope {
     public variables: Map<string, Simbolo>;
+    public funciones: Map<string, Funcion>;
 
     constructor(public padre: Scope | null) {
         this.variables = new Map();
+        this.funciones = new Map();
     }
 
     public crearVar(id: string, value: any, type: Tipo, linea: number, columna: number) {
@@ -20,7 +23,6 @@ export class Scope {
             scope = scope.padre;
         }
         if(value == null) {
-            console.log("toy aki");
             if(type == Tipo.ENTERO) {
                 this.variables.set(id, new Simbolo(0, id, type));
             } else if(type == Tipo.DECIMAL) {
@@ -94,5 +96,39 @@ export class Scope {
             scope = scope.padre;
         }
         throw new _Error(linea, columna, "Semántico", "No se ha declarado la variable " + id);
+    }
+
+    public guardarFuncion(id: string, funcion: Funcion, linea:number, columna:number) {
+        let scope: Scope | null = this;
+
+        while(scope != null) {
+            if(scope.funciones.has(id)) { 
+                throw new _Error(linea, columna, "Semántico", "La función " + id + " ya ha sido declarada.");
+            }
+            scope = scope.padre;
+        }
+        this.funciones.set(id, funcion)
+    }
+
+    public getFuncion(id: string, linea:number, columna:number): Funcion {
+        let scope: Scope | null = this;
+
+        while(scope != null) {
+            if(scope.funciones.has(id)) { 
+                return scope.funciones.get(id);
+            }
+            scope = scope.padre;
+        }
+        throw new _Error(linea, columna, "Semántico", "No se ha declarado la función " + id);
+    }
+
+    // función para devolver el scope más general, el global
+    public getGlobal(): Scope {
+        let scope: Scope | null = this;
+
+        while(scope?.padre != null) {
+            scope = scope.padre;
+        }
+        return scope;
     }
 }

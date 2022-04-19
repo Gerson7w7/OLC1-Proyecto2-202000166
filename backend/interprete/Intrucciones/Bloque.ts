@@ -1,3 +1,4 @@
+import { Tipo } from "../Expresion/Retorno";
 import { Scope } from "../Extra/Scope";
 import { Instruccion } from "./Instruccion";
 import { Retorno } from "./Retorno";
@@ -24,7 +25,7 @@ export class Bloque extends Instruccion {
                             if (retorno.output != null) {
                                 salida += retorno.output;
                             }
-                            return { output: salida, transferencia: { type:retorno.transferencia.type, linea:retorno.transferencia.linea, columna:retorno.transferencia.columna} };
+                            return { output: salida, transferencia: retorno.transferencia, retorno: retorno.retorno };
                         } else if (retorno.output != null) {
                             salida += retorno.output;
                         }
@@ -35,6 +36,6 @@ export class Bloque extends Instruccion {
                 salida += `Error ${error.tipo}: ${error.mensaje} en la linea: ${error.linea}, columna: ${error.columna}\n`;
             }
         }
-        return { output: salida, transferencia: null };
+        return { output: salida, transferencia: null, retorno: null };
     }
 }

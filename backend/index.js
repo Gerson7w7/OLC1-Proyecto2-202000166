@@ -4,6 +4,10 @@ const cors = require("cors");
 const parser = require("./interprete/Gramatica/grammar");
 const { _Error } = require("./dist/Error/_Error");
 const { TipoTransferencia } = require("./dist/Intrucciones/Transferencias");
+const { Funcion } = require("./dist/Intrucciones/Funcion");
+
+// variable global para la salida
+let salida = "";
 
 const app = express();
 app.use(express.json());
@@ -20,11 +24,25 @@ app.post("/grammar", (req, res) => {
   const ast = parser.parse(data.data);
   console.log(ast);
   const scope = new Scope(null);
-  let salida = "";
-  // ejecutando todas las instrucciones 
+
+  // primera pasada: guardando todas las funciones declaradas
+  for (const instr of ast) {
+    try {
+      if (instr instanceof Funcion) {
+        instr.ejecutar(scope);
+      } 
+    } catch (error) {
+      console.log(error);
+      salida += `Error ${error.tipo}: en linea: ${error.linea}, columna: ${error.columna}. ${error.mensaje}\n`;
+    }
+  }
+
+  // ejecutando todas las instrucciones
   for (const inst of ast) {
     try {
-      // este es para el caso en que venga un array de 2 demensiones
+      // se ejecutarán todas las instrucciones menos las funciones, ya que ya fueron ejecutadas
+      if (!(inst instanceof Funcion)) {
+        // este es para el caso en que venga un array de 2 demensiones
       if (inst instanceof Array) {
         for (const inst2 of inst) {
           inst2.ejecutar(scope);
@@ -35,14 +53,22 @@ app.post("/grammar", (req, res) => {
         if (retorno != null && retorno != undefined) {
           if (retorno.output != null) {
             salida += retorno.output;
-          } 
-          if (retorno.transferencia != null) {
+          }
+          if (retorno.transferencia != null && retorno.transferencia.type != TipoTransferencia.RETURN) {
             // si es una sentencia de transferencia, lanzamos un error semántico
-            let error = new _Error(retorno.transferencia.linea, retorno.transferencia.columna, "Semántico", "No se puede utilizar la sentencia " + TipoTransferencia[retorno.transferencia.type] + " en afuera de un ciclo");
+            let error = new _Error(
+              retorno.transferencia.linea,
+              retorno.transferencia.columna,
+              "Semántico",
+              "No se puede utilizar la sentencia " +
+                TipoTransferencia[retorno.transferencia.type] +
+                " en afuera de un ciclo"
+            );
             console.log(error);
             salida += `Error ${error.tipo}: en la linea: ${error.linea}, columna: ${error.columna}. ${error.mensaje}\n`;
-          } 
+          }
         }
+      }
       }
     } catch (error) {
       console.log(error);

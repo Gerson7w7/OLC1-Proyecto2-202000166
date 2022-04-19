@@ -38,7 +38,7 @@ class Switch extends Instruccion_1.Instruccion {
                                 if (resultado.output != null) {
                                     salida += resultado.output;
                                 }
-                                return { output: salida, transferencia: { type: resultado.transferencia.type, linea: resultado.transferencia.linea, columna: resultado.transferencia.columna } };
+                                return { output: salida, transferencia: resultado.transferencia, retorno: resultado.retorno };
                             }
                         }
                         else if (resultado.output != null) {
@@ -60,7 +60,7 @@ class Switch extends Instruccion_1.Instruccion {
                             if (resultado.output != null) {
                                 salida += resultado.output;
                             }
-                            return { output: salida, transferencia: { type: resultado.transferencia.type, linea: resultado.transferencia.linea, columna: resultado.transferencia.columna } };
+                            return { output: salida, transferencia: resultado.transferencia, retorno: resultado.retorno };
                         }
                         else if (resultado.output != null) {
                             salida += resultado.output;
@@ -72,7 +72,7 @@ class Switch extends Instruccion_1.Instruccion {
                 }
             }
         }
-        return { output: salida, transferencia: null };
+        return { output: salida, transferencia: null, retorno: null };
     }
 }
 exports.Switch = Switch;

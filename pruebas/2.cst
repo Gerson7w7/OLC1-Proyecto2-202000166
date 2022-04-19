@@ -1,0 +1,243 @@
+
+func1("ooaa");
+
+func1(string a) : void {
+    println("función 1");
+    int a = 5;
+    boolean b = a == 5;
+    print(b);
+    
+    int miArrayInt[] = [1,10,20];
+    print(miArrayInt[1]);
+    
+    string miArrayString[] = ["Daniel","Josué","Hola mundo"];
+    print(miArrayString[2]);
+    
+    int sumaElementsArray = miArrayInt[0] + miArrayInt[1] + miArrayInt[2];
+    print(sumaElementsArray);
+    
+    int matrizInt[][] = [[1,2,3],[4,5,6],[7,8,9]];
+    print(matrizInt[2][2]);
+    print(matrizInt[1][2]);
+    print(matrizInt[0][2]);
+    
+    a = 50 + 10 + miArrayInt[0] +  matrizInt[2][2];
+    print(a);
+    print(miArrayInt[0]);
+    miArrayInt[0] = 50 + 10 + miArrayInt[0] +  matrizInt[2][2];
+    print(miArrayInt[0]);
+    print(sumaElementsArray);
+    print(miArrayInt);
+    
+    
+    print(miArrayString[2]);
+    miArrayString[2] = "Adiós mundo";
+    print(miArrayString[2]);
+    print(miArrayString);
+    
+    
+    matrizInt[2][2] = 50 + 10 + miArrayInt[0] +  matrizInt[2][2];
+    print(matrizInt[2][2]);
+    matrizInt[0][2] = 1000;
+    print(matrizInt[0][2]);
+    print(matrizInt);
+    func2(18);
+}
+
+func2(int a) {
+    println("función 2");
+    boolean a = !((5>1) && ("a"=="a") && ("e"!="a"));
+    
+
+    if(5>2){
+        if(10<100){
+            switch("hola"){
+            case "hola":
+                println("funcionó a la primera aaaaaa");
+                break;
+            case "adios":
+                println("funcionó a la primera sí que sí");
+                println("funcionó a la primera sí que sí");
+                println("funcionó a la primera sí que sí");
+            case "a":
+                println("aaaaaaaaaaaa");
+            case "hola":
+                println("otra función");
+            default:
+                println("eeeeeeeeeeeeee");
+        }
+            
+    }
+    }else{
+        switch(2){
+        case 1:
+            print("funcionó a la primera");
+        case 2:
+            print("funcionó en otro intento");
+    }
+    }
+    func3(true);
+}
+
+func3(boolean a) {
+    println("función 3");
+    boolean a = !((5>1) && ("a"=="a") && ("e"!="a"));
+    if (!a) {
+        println("soi un if");
+        println("que ondaaa");
+        int b[][] = [[1,2,3],[4,5,6],[7,8,9]];
+        println(b[0][2]);
+        int c, d, e,f = 0; 
+        while(c < 5) {
+            println("hola soi un while: " + c);
+            c++;
+            c++;
+            switch (c) {
+                case 0:
+                    c++;
+                case 1:
+                    c = c + 5;
+                case 2:
+                    println("case2");
+                default:
+                    println("c:" + c);
+            }
+            break;
+        }
+        int t = 0;
+        do{
+            t++;
+            if(t%2==0){
+            println("hola pepito:" + t);
+            }
+        }while(5>t);
+    } else {
+        println("soi un else");
+        println("ggwp");
+        string b[][] = [["daf","daf","siuu"],["af","daf","ad"],["fad","ddff","fdafad"]];
+        println(b[0][2]);
+        int c, d, e,f = 1; 
+        boolean flag = false;
+        while(true) {
+            println("hola soi un while: " + c);
+            if (flag == false) {
+                flag = true;
+                switch (c) {
+                    case 0:
+                        println("entre en 0");
+                        c++;
+                    case 1:
+                        println("entre en 1");
+                        c = 10 + c;
+                        println("c:" + c);
+                        break;
+                    case 2:
+                        println("entre en 2");
+                        println("case2");
+                    default:
+                        println("entre en 3");
+                        println("c:" + c);
+                }
+                continue;
+            } 
+            if ((flag == true) && (c == 15)) {
+                break;
+            }
+            c++;
+        }
+    }
+
+    println(" >" + a);
+    fun4();
+}
+
+fun4(){
+    println("------ funcion 4 ------");
+    println("------ con variable declarada ------");
+    int a = 0;
+    for(a = 3; a==3; a++){
+        println("este for es de igual");
+    }
+    println("valor salida for ==: " + a);
+    for(a = 0; a!=6; a++){
+        println("Soy distinto de 6: " + a);
+    }
+    println("valor salida for !=: " + a);
+    for(a = 8; a>6; a--){
+        println("Soy mayor y me están restando inició en 8: " + a);
+    }
+    println("valor salida for >: " + a);
+    for(a = 0; a<6; a++){
+        println("Soy menor y me están sumando inició en 0: " + a);
+    }
+    println("valor salida for <: " + a);
+    for(a = 8; a>=6; a--){
+        println("Soy mayor e igual y me están restando inició en 8: " + a);
+    }
+    println("valor salida for >=: " + a);
+    for(a = 0; a<=6; a++){
+        println("Soy menor e igual y me están sumando inició en 0: " + a);
+    }
+    println("valor salida for <=: " + a);
+    
+    println("------ con variable no declarada ------");
+    for(int e = 0; e == 0; e++){
+        println("este es de igual pero con declaración en el for: " + e);
+    }
+    for(int e = 0; e != 4; e++){
+        println("este es de distinto pero con declaración en el for: " + e);
+    }
+    for(int e = 6; e > 4; e--){
+        println("este es de mayor pero con declaración en el for: " + e);
+    }
+    for(int e = 0; e < 4; e++){
+        println("este es de menor pero con declaración en el for: " + e);
+    }
+    for(int e = 6; e >= 4; e--){
+        println("este es de mayor e igual pero con declaración en el for: " + e);
+    }
+    for(int e = 0; e <= 4; e++){
+        if(e==2){
+            break;
+        }
+        println("este es de menor e igual pero con declaración en el for: " + e);
+}
+fun5();
+}
+
+fun5(){
+    println("------ funcion 5 ------");
+    string soyuntulower = toLower("AAAA");
+    print(soyuntulower);
+    println(toLower("AAAA"));
+    
+    string soyuntuuppper = toUpper("eee");
+    println(soyuntuuppper);
+    println(toUpper("eee"));
+    
+    double soyunround = round(5.4);
+    println(soyunround);
+    println(round(5.5));
+    
+    println("--- TEST Lenght ---");
+    int soyunlength = length("aaaaaa");
+    println(soyunlength);
+    soyunlength = length(soyuntuuppper);
+    println(soyunlength);
+    
+    string vector2[] = ["hola", "Mundo"];
+    int tam_vector = length(vector2); 
+    println(tam_vector);
+    int tam_hola = length(vector2[0]);
+    println(tam_hola);
+    
+    char soychar = 'A';
+    
+    println(typeof(vector2));
+    println(typeof(tam_hola));
+    println(typeof(soyunround));
+    println(typeof(soychar));
+    
+    string toconverter = toString(1234);
+    println(toconverter);
+}

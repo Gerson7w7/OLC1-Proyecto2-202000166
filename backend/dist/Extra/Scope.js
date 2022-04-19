@@ -8,6 +8,7 @@ class Scope {
     constructor(padre) {
         this.padre = padre;
         this.variables = new Map();
+        this.funciones = new Map();
     }
     crearVar(id, value, type, linea, columna) {
         let scope = this;
@@ -19,7 +20,6 @@ class Scope {
             scope = scope.padre;
         }
         if (value == null) {
-            console.log("toy aki");
             if (type == Retorno_1.Tipo.ENTERO) {
                 this.variables.set(id, new Simbolo_1.Simbolo(0, id, type));
             }
@@ -98,6 +98,34 @@ class Scope {
             scope = scope.padre;
         }
         throw new _Error_1._Error(linea, columna, "Semántico", "No se ha declarado la variable " + id);
+    }
+    guardarFuncion(id, funcion, linea, columna) {
+        let scope = this;
+        while (scope != null) {
+            if (scope.funciones.has(id)) {
+                throw new _Error_1._Error(linea, columna, "Semántico", "La función " + id + " ya ha sido declarada.");
+            }
+            scope = scope.padre;
+        }
+        this.funciones.set(id, funcion);
+    }
+    getFuncion(id, linea, columna) {
+        let scope = this;
+        while (scope != null) {
+            if (scope.funciones.has(id)) {
+                return scope.funciones.get(id);
+            }
+            scope = scope.padre;
+        }
+        throw new _Error_1._Error(linea, columna, "Semántico", "No se ha declarado la función " + id);
+    }
+    // función para devolver el scope más general, el global
+    getGlobal() {
+        let scope = this;
+        while ((scope === null || scope === void 0 ? void 0 : scope.padre) != null) {
+            scope = scope.padre;
+        }
+        return scope;
     }
 }
 exports.Scope = Scope;

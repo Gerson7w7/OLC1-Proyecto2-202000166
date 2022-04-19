@@ -1,0 +1,110 @@
+boolean a = !((5>1) && ("a"=="a") && ("e"!="a"));
+if (a) {
+    println("soi un if");
+    println("que ondaaa");
+    int b[][] = [[1,2,3],[4,5,6],[7,8,9]];
+    println(b[0][2]);
+    int c, d, e,f = 0; 
+    while(c < 5) {
+        println("hola soi un while: " + c);
+        c++;
+        switch (c) {
+            case 0:
+                c++;
+            case 1:
+                c = c + 5;
+            case 2:
+                println("case2");
+                println("for ascendente:");
+                for (int i = 0; i < 5; i++) {
+                    println("i = " + i);
+                }
+                do {
+                    println("soi un do-while y solo me ejecuto una vez :D");
+                }while(i == 0);
+            default:
+                println("c:" + c);
+        }
+        break;
+    }
+} else {
+    println("soi un else");
+    println("ggwp");
+    string b[][] = [["daf","daf","siuu"],["af","daf","ad"],["fad","ddff","fdafad"]];
+    println(b[0][2]);
+    int c, d, e,f = 0; 
+    boolean flag = false;
+    while(true) {
+        println("hola soi un while: " + c);
+        if (flag == false) {
+            flag = true;
+            switch (c) {
+                case 0:
+                    c++;
+                case 1:
+                    c = 10 + c;
+                    println("c:" + c);
+                    break;
+                case 2:
+                    println("case2");
+                default:
+                    println("c:" + c);
+            }
+            continue;
+        } 
+        if (flag == true && c == 15) {
+            println("for descendente:");
+            for (int i = 5; i > 0 ; i--) {
+                println("i = " + i);
+            }
+            do {
+                println("soi un do-while y solo me ejecuto dos veces :D");
+                i++;
+            }while(i <= 1);
+            break;
+        }
+        c++;
+    }
+}
+
+int a = func1("ooaa");
+println("a" + a);
+
+func1(string a):int {
+    string b = "ooaa";
+    print("función 1");
+    println(" >" + a);
+    if("ooaa" == b) {
+        return func2(18);
+    }
+    return func2(10);
+}
+
+func2(int a):int {
+    print("función 2");
+    println(" >" + a);
+    if (a == 10) {
+        return func3(true);
+    }
+    return func3(false);
+}
+
+func3(boolean a):int {
+    print("función 3");
+    println(" >" + a);
+    if (a) {
+        return 1;
+    }
+    return 0;
+}
+
+string a = rec("ooaa", 5);
+println(a);
+
+rec(string a, int b): string {
+    println(a + b);
+    if (b == 0) {
+        return "fin recursividad";
+    }
+    return rec(a, b - 1);
+}

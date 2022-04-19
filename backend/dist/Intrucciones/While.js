@@ -38,6 +38,12 @@ class While extends Instruccion_1.Instruccion {
                         }
                         continue;
                     }
+                    else if (retorno.transferencia.type == Transferencias_1.TipoTransferencia.RETURN) {
+                        if (retorno.output != null) {
+                            salida += retorno.output;
+                        }
+                        return { output: salida, transferencia: retorno.transferencia, retorno: retorno.retorno };
+                    }
                 }
                 else if (retorno.output != null) {
                     salida += retorno.output;
@@ -50,7 +56,7 @@ class While extends Instruccion_1.Instruccion {
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "La condición a evaluar tiene que retornar BOOLEAN, y se obtuvo " + Retorno_1.Tipo[value.type]);
             }
         }
-        return { output: salida, transferencia: null };
+        return { output: salida, transferencia: null, retorno: null };
     }
 }
 exports.While = While;
