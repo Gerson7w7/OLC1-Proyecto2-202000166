@@ -1,5 +1,5 @@
 boolean a = !((5>1) && ("a"=="a") && ("e"!="a"));
-if (a) {
+if (!a) {
     println("soi un if");
     println("que ondaaa");
     int b[][] = [[1,2,3],[4,5,6],[7,8,9]];
@@ -19,6 +19,7 @@ if (a) {
                 for (int i = 0; i < 5; i++) {
                     println("i = " + i);
                 }
+                int i = 1;
                 do {
                     println("soi un do-while y solo me ejecuto una vez :D");
                 }while(i == 0);
@@ -57,6 +58,7 @@ if (a) {
             for (int i = 5; i > 0 ; i--) {
                 println("i = " + i);
             }
+            int i = 0;
             do {
                 println("soi un do-while y solo me ejecuto dos veces :D");
                 i++;
@@ -108,3 +110,28 @@ rec(string a, int b): string {
     }
     return rec(a, b - 1);
 }
+
+int a = facR(5);
+println(a);
+facR (int n):int{
+    int resultado;
+    if (n==1) {
+        return 1;
+    } 
+    resultado = facR(n-1)*n;
+    return resultado;
+}
+
+prinln(a);
+prinln(b);
+prinln(c);
+prinln(d);
+prinln(e);
+prinln(f);
+
+// empieza a escribir tu código...
+@→♥☺Ð
+
+; if else 
+&& || 
+()println

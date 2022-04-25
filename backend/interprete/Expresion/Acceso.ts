@@ -11,7 +11,7 @@ export class Acceso extends Expresion {
     public ejecutar(scope: Scope): Retorno {
         const value = scope.getValor(this.id, this.linea, this.columna);
         if(value != null) {
-            return {value: value.valor, type: value.type}
+            return {value: value.valor, type: value.type, output: null}
         }
         throw new _Error(this.linea, this.columna, 'Semántico', 'No se ha declarado la variable ' + value.id);
     }

@@ -14,6 +14,6 @@ export class Length extends Expresion {
         if (!(val.value instanceof Array) && val.type != Tipo.CADENA) {
             throw new _Error(this.linea, this.columna, "Semántico", "Se esperaba un VECTOR, LISTA o CADENA y se obtuvo un " + Tipo[val.type]);
         }
-        return { value: val.value.length, type: Tipo.ENTERO };
+        return { value: val.value.length, type: Tipo.ENTERO, output: val.output };
     }
 }

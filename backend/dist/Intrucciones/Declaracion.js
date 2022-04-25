@@ -87,7 +87,6 @@ class AsignacionSimple extends Instruccion_1.Instruccion {
         }
         else {
             const valFuncion = this.value.ejecutar(scope);
-            console.log("VALUE:  " + valFuncion.retorno.value);
             if (valFuncion.retorno != null) {
                 if (valFuncion.retorno.value instanceof Array) {
                     throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. " + "No se puede asignar un vector en una variable.");

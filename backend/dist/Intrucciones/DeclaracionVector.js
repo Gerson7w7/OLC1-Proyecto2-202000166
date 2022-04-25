@@ -149,17 +149,6 @@ class DeclaracionVector2 extends Instruccion_1.Instruccion {
             tipo = val.type;
         }
         scope.crearVar(this.id, valorExpresiones, tipo, this.linea, this.columna);
-        // console.log("value: ")
-        // for (const l of valorExpresiones) {
-        //     if (l instanceof Array) {
-        //         for (const l2 of l) {
-        //             console.log(l2);
-        //         }
-        //         console.log("-----------------")
-        //     } else {
-        //         console.log(l);
-        //     }
-        // }
         return null;
     }
     tipo(tipo) {

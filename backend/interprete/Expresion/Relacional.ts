@@ -35,17 +35,17 @@ export class Relacional extends Expresion {
 
         if (permitido) {
             if (this.tipo == TipoRelacional.IGUAL) {
-                return { value: (valorIzquierda.value == valorDerecha.value), type: Tipo.BOOLEAN };
+                return { value: (valorIzquierda.value == valorDerecha.value), type: Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
             } else if (this.tipo == TipoRelacional.DESIGUAL) {
-                return { value: (valorIzquierda.value != valorDerecha.value), type: Tipo.BOOLEAN };
+                return { value: (valorIzquierda.value != valorDerecha.value), type: Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
             } else if (this.tipo == TipoRelacional.MENOR) {
-                return { value: (valorIzquierda.value < valorDerecha.value), type: Tipo.BOOLEAN };
+                return { value: (valorIzquierda.value < valorDerecha.value), type: Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
             } else if (this.tipo == TipoRelacional.MENOR_IGUAL) {
-                return { value: (valorIzquierda.value <= valorDerecha.value), type: Tipo.BOOLEAN };
+                return { value: (valorIzquierda.value <= valorDerecha.value), type: Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
             } else if (this.tipo == TipoRelacional.MAYOR) {
-                return { value: (valorIzquierda.value > valorDerecha.value), type: Tipo.BOOLEAN };
+                return { value: (valorIzquierda.value > valorDerecha.value), type: Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
             } else if (this.tipo == TipoRelacional.MAYOR_IGUAL) {
-                return { value: (valorIzquierda.value >= valorDerecha.value), type: Tipo.BOOLEAN };
+                return { value: (valorIzquierda.value >= valorDerecha.value), type: Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
             }
             throw new _Error(this.linea, this.columna, "Semántico", "Error");
         } else {

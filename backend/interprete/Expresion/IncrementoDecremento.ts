@@ -17,13 +17,13 @@ export class IncrementoDecremento extends Expresion {
         if (this.tipo == TipoAritmetica.SUMA) {
             if (valorExpresion.type == Tipo.ENTERO || valorExpresion.type == Tipo.DECIMAL) {
                 scope.setValor(this.expresion.id, valorExpresion.value + 1, valorExpresion.type, this.linea, this.columna);
-                return { value: valorExpresion.value, type: valorExpresion.type };
+                return { value: valorExpresion.value, type: valorExpresion.type, output: valorExpresion.output };
             }
             throw new _Error(this.linea, this.columna, "Semántico", "No se puede incrementar el siguiente valor: " + valorExpresion.value);
         } else {
             if (valorExpresion.type == Tipo.ENTERO || valorExpresion.type == Tipo.DECIMAL) {
                 scope.setValor(this.expresion.id, valorExpresion.value - 1, valorExpresion.type, this.linea, this.columna);
-                return { value: valorExpresion.value, type: valorExpresion.type };
+                return { value: valorExpresion.value, type: valorExpresion.type, output: valorExpresion.output };
             }
             throw new _Error(this.linea, this.columna, "Semántico", "No se puede decrementar el siguiente valor: " + valorExpresion.value);
         }

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TipoAritmetica = exports.Aritmetica = void 0;
 const _Error_1 = require("../Error/_Error");
+const LlamadaFuncion_1 = require("../Intrucciones/LlamadaFuncion");
 const Expresion_1 = require("./Expresion");
 const Retorno_1 = require("./Retorno");
 class Aritmetica extends Expresion_1.Expresion {
@@ -13,23 +14,75 @@ class Aritmetica extends Expresion_1.Expresion {
     }
     ejecutar(scope) {
         // valores de las expresiones 
-        const valorIzquierda = this.izquierda.ejecutar(scope);
-        const valorDerecha = this.derecha.ejecutar(scope);
+        let valorIzquierda;
+        let valorDerecha;
+        let flagIzq = null, flagDer = null;
+        if (this.izquierda instanceof LlamadaFuncion_1.LlamadaFuncion) {
+            const funIzquierda = this.izquierda.ejecutar(scope);
+            console.log("output:: " + funIzquierda.retorno.output);
+            if (funIzquierda.retorno != null) {
+                valorIzquierda = funIzquierda.retorno;
+                if (funIzquierda.output != null) {
+                    flagIzq = funIzquierda.output;
+                }
+            }
+        }
+        else {
+            valorIzquierda = this.izquierda.ejecutar(scope);
+        }
+        if (this.derecha instanceof LlamadaFuncion_1.LlamadaFuncion) {
+            const funDerecha = this.derecha.ejecutar(scope);
+            if (funDerecha.retorno != null) {
+                valorDerecha = funDerecha.retorno;
+                if (funDerecha.output != null) {
+                    flagIzq = funDerecha.output;
+                }
+            }
+        }
+        else {
+            valorDerecha = this.derecha.ejecutar(scope);
+        }
         let dominante;
         if (this.tipo == TipoAritmetica.SUMA) {
             dominante = this.tipoDominanteSuma(valorIzquierda.type, valorDerecha.type);
             if (dominante == Retorno_1.Tipo.ENTERO) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq };
+                    }
+                    else {
+                        return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq + flagDer };
+                    }
+                }
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq };
+                    }
+                    else {
+                        return { value: (valorIzquierda.value + valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq + flagDer };
+                    }
+                }
             }
             else if (dominante == Retorno_1.Tipo.CADENA) {
-                return { value: (valorIzquierda.value.toString() + valorDerecha.value.toString()), type: Retorno_1.Tipo.CADENA };
+                return { value: (valorIzquierda.value.toString() + valorDerecha.value.toString()), type: Retorno_1.Tipo.CADENA, output: flagIzq + flagDer };
             }
             else {
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador +.");
@@ -40,12 +93,38 @@ class Aritmetica extends Expresion_1.Expresion {
             if (dominante == Retorno_1.Tipo.ENTERO) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq };
+                    }
+                    else {
+                        return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq + flagDer };
+                    }
+                }
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq };
+                    }
+                    else {
+                        return { value: (valorIzquierda.value - valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq + flagDer };
+                    }
+                }
             }
             else {
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador -.");
@@ -56,12 +135,38 @@ class Aritmetica extends Expresion_1.Expresion {
             if (dominante == Retorno_1.Tipo.ENTERO) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq };
+                    }
+                    else {
+                        return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq + flagDer };
+                    }
+                }
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq };
+                    }
+                    else {
+                        return { value: (valorIzquierda.value * valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq + flagDer };
+                    }
+                }
             }
             else {
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador *.");
@@ -73,7 +178,20 @@ class Aritmetica extends Expresion_1.Expresion {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 if (valorDerecha.value != 0) {
-                    return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
+                    if (flagIzq == null && flagDer == null) {
+                        return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: null };
+                    }
+                    else {
+                        if (flagIzq == null) {
+                            return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagDer };
+                        }
+                        else if (flagDer == null) {
+                            return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq };
+                        }
+                        else {
+                            return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq + flagDer };
+                        }
+                    }
                 }
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Valor indeterminado. No se puede operar " + valorIzquierda.value + " entre 0.");
             }
@@ -81,7 +199,20 @@ class Aritmetica extends Expresion_1.Expresion {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
                 if (valorDerecha.value != 0) {
-                    return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
+                    if (flagIzq == null && flagDer == null) {
+                        return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: null };
+                    }
+                    else {
+                        if (flagIzq == null) {
+                            return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagDer };
+                        }
+                        else if (flagDer == null) {
+                            return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq };
+                        }
+                        else {
+                            return { value: (valorIzquierda.value / valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq + flagDer };
+                        }
+                    }
                 }
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Valor indeterminado. No se puede operar " + valorIzquierda.value + " entre 0.");
             }
@@ -94,12 +225,38 @@ class Aritmetica extends Expresion_1.Expresion {
             if (dominante == Retorno_1.Tipo.ENTERO) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.ENTERO };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.ENTERO, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.ENTERO, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.ENTERO, output: flagIzq };
+                    }
+                    else {
+                        return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.ENTERO, output: flagIzq + flagDer };
+                    }
+                }
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.DECIMAL };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.DECIMAL, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.DECIMAL, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.DECIMAL, output: flagIzq };
+                    }
+                    else {
+                        return { value: (Math.pow(valorIzquierda.value, valorDerecha.value)), type: Retorno_1.Tipo.DECIMAL, output: flagIzq + flagDer };
+                    }
+                }
             }
             else {
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador ^.");
@@ -110,12 +267,38 @@ class Aritmetica extends Expresion_1.Expresion {
             if (dominante == Retorno_1.Tipo.ENTERO) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.ENTERO };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq };
+                    }
+                    else {
+                        return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.ENTERO, output: flagIzq + flagDer };
+                    }
+                }
             }
             else if (dominante == Retorno_1.Tipo.DECIMAL) {
                 valorIzquierda.value = this.convertirNumero(valorIzquierda.value);
                 valorDerecha.value = this.convertirNumero(valorDerecha.value);
-                return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.DECIMAL };
+                if (flagIzq == null && flagDer == null) {
+                    return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: null };
+                }
+                else {
+                    if (flagIzq == null) {
+                        return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagDer };
+                    }
+                    else if (flagDer == null) {
+                        return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq };
+                    }
+                    else {
+                        return { value: (valorIzquierda.value % valorDerecha.value), type: Retorno_1.Tipo.DECIMAL, output: flagIzq + flagDer };
+                    }
+                }
             }
             else {
                 throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. No se puede operar " + valorIzquierda.value + " y " + valorDerecha.value + " con el operador %.");

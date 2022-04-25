@@ -15,7 +15,7 @@ class Round extends Expresion_1.Expresion {
         if (val.type != Retorno_1.Tipo.DECIMAL) {
             throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Se esperaba un DECIMAL y se obtuvo un " + Retorno_1.Tipo[val.type]);
         }
-        return { value: Math.round(val.value), type: Retorno_1.Tipo.ENTERO };
+        return { value: Math.round(val.value), type: Retorno_1.Tipo.ENTERO, output: val.output };
     }
 }
 exports.Round = Round;

@@ -13,15 +13,15 @@ export class Casteo extends Expresion {
         const valorExpresion = this.expresion.ejecutar(scope);
 
         if (valorExpresion.type == Tipo.ENTERO && this.tipo == 'double') {
-            return { value: valorExpresion.value.toFixed(1), type: Tipo.DECIMAL };
+            return { value: valorExpresion.value.toFixed(1), type: Tipo.DECIMAL, output: valorExpresion.output };
         } else if (valorExpresion.type == Tipo.DECIMAL && this.tipo == 'int') {
-            return { value: parseInt(valorExpresion.value, 10), type: Tipo.ENTERO };
+            return { value: parseInt(valorExpresion.value, 10), type: Tipo.ENTERO, output: valorExpresion.output };
         } else if (valorExpresion.type == Tipo.ENTERO && this.tipo == 'char') {
-            return { value: String.fromCharCode(valorExpresion.value), type: Tipo.CARACTER };
+            return { value: String.fromCharCode(valorExpresion.value), type: Tipo.CARACTER, output: valorExpresion.output };
         } else if (valorExpresion.type == Tipo.CARACTER && this.tipo == 'int') {
-            return { value: valorExpresion.value.charCodeAt(0), type: Tipo.ENTERO };
+            return { value: valorExpresion.value.charCodeAt(0), type: Tipo.ENTERO, output: valorExpresion.output };
         } else if (valorExpresion.type == Tipo.CARACTER && this.tipo == 'double') {
-            return { value: valorExpresion.value.charCodeAt(0).toFixed(1), type: Tipo.DECIMAL };
+            return { value: valorExpresion.value.charCodeAt(0).toFixed(1), type: Tipo.DECIMAL, output: valorExpresion.output };
         }
         throw new _Error(this.linea, this.columna, "Semántico", "Error de casteo. No es posible pasar de " + Tipo[valorExpresion.type] + " a " + this.tipo.toUpperCase());
     }

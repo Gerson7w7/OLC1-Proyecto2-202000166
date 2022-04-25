@@ -10,18 +10,18 @@ export class Literal extends Expresion {
 
     public ejecutar(scope: Scope): Retorno {
         if (this.tipo == TipoLiteral.ENTERO) {
-            return { value: Number(this.value), type: Tipo.ENTERO };
+            return { value: Number(this.value), type: Tipo.ENTERO, output: null };
         } else if (this.tipo == TipoLiteral.DECIMAL) {
-            return { value: Number(this.value), type: Tipo.DECIMAL };
+            return { value: Number(this.value), type: Tipo.DECIMAL, output: null };
         } else if (this.tipo == TipoLiteral.BOOLEAN) {
             if (this.value.toString().toLowerCase() == "true") {
-                return { value: true, type: Tipo.BOOLEAN };
+                return { value: true, type: Tipo.BOOLEAN, output: null };
             }
-            return { value: false, type: Tipo.BOOLEAN };
+            return { value: false, type: Tipo.BOOLEAN, output: null };
         } else if (this.tipo == TipoLiteral.CARACTER) {
-            return { value: this.value.toString(), type: Tipo.CARACTER };
+            return { value: this.value.toString(), type: Tipo.CARACTER, output: null };
         } else if (this.tipo == TipoLiteral.CADENA) {
-            return { value: this.value.toString(), type: Tipo.CADENA };
+            return { value: this.value.toString(), type: Tipo.CADENA, output: null };
         }
         throw new _Error(this.linea, this.columna, "Semántico", "Error");
     }

@@ -26,6 +26,8 @@
     const { ToChararray } = require("../Expresion/ToChararray");
     const { Funcion } = require("../Intrucciones/Funcion");
     const { LlamadaFuncion } = require("../Intrucciones/LlamadaFuncion");
+    const { Run } = require("../Intrucciones/Run");
+    const { _Error } = require("../Error/_Error");
 %}
 
 %lex
@@ -123,7 +125,7 @@
 \'\\?.\'                	{ yytext = yytext.substr(1,yyleng-2); return 'CARACTER'; }
 
 <<EOF>>				        return 'EOF';
-.					        {console.log(yylloc.first_line, yylloc.first_column,'Lexico',yytext)}
+.					        return 'ERROR';
 
 /lex
 
@@ -154,7 +156,7 @@ ini
 
 instrucciones
     : instrucciones instruccion { $1.push($2); $$ = $1; }
-    | instruccion               { $$ = [$1]; }  
+    | instruccion               { $$ = [$1]; } 
 ;
 
 instruccion
@@ -172,11 +174,18 @@ instruccion
     | funcion
     | metodo
     | llamada_funcion PUNTO_COMA
+    | RUN llamada_funcion PUNTO_COMA        { $$ = new Run($2, @1.first_line, @1.first_column) }
     // sentencias de transferencia
     | BREAK PUNTO_COMA                      { $$ = new Break(@1.first_line, @1.first_column) }
     | CONTINUE PUNTO_COMA                   { $$ = new Continue(@1.first_line, @1.first_column) }
     | RETURN PUNTO_COMA                     { $$ = new Return(null, @1.first_line, @1.first_column) }
     | RETURN expresion PUNTO_COMA           { $$ = new Return($2, @1.first_line, @1.first_column) }
+    | errores
+;
+
+errores
+    : ERROR { $$ = new _Error(@1.first_line, @1.first_column, "Léxico", "No se reconoce el siguiente token: " + yytext, yytext) }
+    | error { $$ = new _Error(@1.first_line, @1.first_column, "Sintáctico", "No se esperaba el siguiente token: " + yytext, yytext) }
 ;
 
 tipo 

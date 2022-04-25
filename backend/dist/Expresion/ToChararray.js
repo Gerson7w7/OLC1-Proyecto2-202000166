@@ -16,7 +16,7 @@ class ToChararray extends Expresion_1.Expresion {
             throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Se esperaba una CADENA y se obtuvo un " + Retorno_1.Tipo[val.type]);
         }
         // devolviendo un vector
-        return { value: Array.from(val.value), type: Retorno_1.Tipo.CARACTER };
+        return { value: Array.from(val.value), type: Retorno_1.Tipo.CARACTER, output: val.output };
     }
 }
 exports.ToChararray = ToChararray;

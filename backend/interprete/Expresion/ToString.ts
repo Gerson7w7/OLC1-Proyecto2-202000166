@@ -15,6 +15,6 @@ export class ToString extends Expresion {
             throw new _Error(this.linea, this.columna, "Semántico", "Se esperaba un ENTERO, DECIMAL o BOOLEAN y se obtuvo un " + Tipo[val.type]);
         }
         // devolviendo un string
-        return { value: val.value.toString(), type: Tipo.CADENA };
+        return { value: val.value.toString(), type: Tipo.CADENA, output: val.output };
     }
 }

@@ -1,6 +1,5 @@
 import { _Error } from "../Error/_Error";
 import { Expresion } from "../Expresion/Expresion";
-import { Tipo } from "../Expresion/Retorno";
 import { Scope } from "../Extra/Scope";
 import { Instruccion } from "./Instruccion";
 import { Retorno } from "./Retorno";

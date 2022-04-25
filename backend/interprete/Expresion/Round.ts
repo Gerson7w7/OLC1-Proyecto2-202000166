@@ -14,6 +14,6 @@ export class Round extends Expresion {
         if(val.type != Tipo.DECIMAL) {
             throw new _Error(this.linea, this.columna, "Semántico", "Se esperaba un DECIMAL y se obtuvo un " + Tipo[val.type]);
         }
-        return { value: Math.round(val.value), type: Tipo.ENTERO };
+        return { value: Math.round(val.value), type: Tipo.ENTERO, output: val.output };
     }
 }

@@ -77,7 +77,6 @@ export class AsignacionSimple extends Instruccion {
             scope.setValor(this.id, val.value, val.type, this.linea, this.columna);
         } else {
             const valFuncion = this.value.ejecutar(scope);
-            console.log("VALUE:  " + valFuncion.retorno.value)
             if (valFuncion.retorno != null) {
                 if (valFuncion.retorno.value instanceof Array) {
                     throw new _Error(this.linea, this.columna, "Semántico", "Tipos incompatibles. " + "No se puede asignar un vector en una variable.");

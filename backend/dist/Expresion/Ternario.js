@@ -19,10 +19,10 @@ class Ternario extends Expresion_1.Expresion {
         const valorCase2 = this.case2.ejecutar(scope);
         if (valorCondicion.type == Retorno_1.Tipo.BOOLEAN) {
             if (valorCondicion.value == true) {
-                return { value: valorCase1.value, type: valorCase1.type };
+                return { value: valorCase1.value, type: valorCase1.type, output: valorCase1.output };
             }
             else {
-                return { value: valorCase2.value, type: valorCase2.type };
+                return { value: valorCase2.value, type: valorCase2.type, output: valorCase2.output };
             }
         }
         throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Se esperaba un " + Retorno_1.Tipo[Retorno_1.Tipo.BOOLEAN] + " como condición, y se encontró un " + Retorno_1.Tipo[valorCondicion.type]);

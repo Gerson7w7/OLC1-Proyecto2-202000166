@@ -19,13 +19,13 @@ class Logico extends Expresion_1.Expresion {
             valorDerecha = this.derecha.ejecutar(scope);
         }
         if (valorIzquierda.type == Retorno_1.Tipo.BOOLEAN && valorDerecha == null) {
-            return { value: (!valorIzquierda.value), type: Retorno_1.Tipo.BOOLEAN };
+            return { value: (!valorIzquierda.value), type: Retorno_1.Tipo.BOOLEAN, output: valorIzquierda.output };
         }
         else if (valorIzquierda.type == Retorno_1.Tipo.BOOLEAN && valorDerecha.type == Retorno_1.Tipo.BOOLEAN) {
             if (this.tipo == TipoLogico.OR) {
-                return { value: (valorIzquierda.value || valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+                return { value: (valorIzquierda.value || valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
             }
-            return { value: (valorIzquierda.value && valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN };
+            return { value: (valorIzquierda.value && valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
         }
         if (valorDerecha == null) {
             throw new _Error_1._Error(this.linea, this.columna, "Semántico", "No se puede negar a nivel lógico " + valorIzquierda.value);

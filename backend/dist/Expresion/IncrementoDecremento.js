@@ -18,14 +18,14 @@ class IncrementoDecremento extends Expresion_1.Expresion {
         if (this.tipo == Aritmetica_1.TipoAritmetica.SUMA) {
             if (valorExpresion.type == Retorno_1.Tipo.ENTERO || valorExpresion.type == Retorno_1.Tipo.DECIMAL) {
                 scope.setValor(this.expresion.id, valorExpresion.value + 1, valorExpresion.type, this.linea, this.columna);
-                return { value: valorExpresion.value, type: valorExpresion.type };
+                return { value: valorExpresion.value, type: valorExpresion.type, output: valorExpresion.output };
             }
             throw new _Error_1._Error(this.linea, this.columna, "Semántico", "No se puede incrementar el siguiente valor: " + valorExpresion.value);
         }
         else {
             if (valorExpresion.type == Retorno_1.Tipo.ENTERO || valorExpresion.type == Retorno_1.Tipo.DECIMAL) {
                 scope.setValor(this.expresion.id, valorExpresion.value - 1, valorExpresion.type, this.linea, this.columna);
-                return { value: valorExpresion.value, type: valorExpresion.type };
+                return { value: valorExpresion.value, type: valorExpresion.type, output: valorExpresion.output };
             }
             throw new _Error_1._Error(this.linea, this.columna, "Semántico", "No se puede decrementar el siguiente valor: " + valorExpresion.value);
         }

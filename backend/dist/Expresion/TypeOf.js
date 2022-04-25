@@ -12,10 +12,10 @@ class TypeOf extends Expresion_1.Expresion {
         // ejecutando la expresion
         const val = this.expresion.ejecutar(scope);
         if (val.value instanceof Array) {
-            return { value: "VECTOR", type: Retorno_1.Tipo.CADENA };
+            return { value: "VECTOR", type: Retorno_1.Tipo.CADENA, output: val.output };
         }
         // devolviendo el tipo de dato
-        return { value: Retorno_1.Tipo[val.type].toString(), type: Retorno_1.Tipo.CADENA };
+        return { value: Retorno_1.Tipo[val.type].toString(), type: Retorno_1.Tipo.CADENA, output: val.output };
     }
 }
 exports.TypeOf = TypeOf;

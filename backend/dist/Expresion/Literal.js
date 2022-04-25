@@ -12,22 +12,22 @@ class Literal extends Expresion_1.Expresion {
     }
     ejecutar(scope) {
         if (this.tipo == TipoLiteral.ENTERO) {
-            return { value: Number(this.value), type: Retorno_1.Tipo.ENTERO };
+            return { value: Number(this.value), type: Retorno_1.Tipo.ENTERO, output: null };
         }
         else if (this.tipo == TipoLiteral.DECIMAL) {
-            return { value: Number(this.value), type: Retorno_1.Tipo.DECIMAL };
+            return { value: Number(this.value), type: Retorno_1.Tipo.DECIMAL, output: null };
         }
         else if (this.tipo == TipoLiteral.BOOLEAN) {
             if (this.value.toString().toLowerCase() == "true") {
-                return { value: true, type: Retorno_1.Tipo.BOOLEAN };
+                return { value: true, type: Retorno_1.Tipo.BOOLEAN, output: null };
             }
-            return { value: false, type: Retorno_1.Tipo.BOOLEAN };
+            return { value: false, type: Retorno_1.Tipo.BOOLEAN, output: null };
         }
         else if (this.tipo == TipoLiteral.CARACTER) {
-            return { value: this.value.toString(), type: Retorno_1.Tipo.CARACTER };
+            return { value: this.value.toString(), type: Retorno_1.Tipo.CARACTER, output: null };
         }
         else if (this.tipo == TipoLiteral.CADENA) {
-            return { value: this.value.toString(), type: Retorno_1.Tipo.CADENA };
+            return { value: this.value.toString(), type: Retorno_1.Tipo.CADENA, output: null };
         }
         throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Error");
     }

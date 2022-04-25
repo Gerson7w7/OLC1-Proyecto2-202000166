@@ -32,7 +32,7 @@ class Return extends Instruccion_1.Instruccion {
         if (this.expresion != null) {
             if (this.expresion instanceof Expresion_1.Expresion) {
                 const val = this.expresion.ejecutar(scope);
-                const retorno = { output: null, transferencia: { type: TipoTransferencia.RETURN, linea: this.linea, columna: this.columna }, retorno: val };
+                const retorno = { output: val.output, transferencia: { type: TipoTransferencia.RETURN, linea: this.linea, columna: this.columna }, retorno: val };
                 return retorno;
             }
             else {

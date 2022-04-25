@@ -16,7 +16,7 @@ class ToString extends Expresion_1.Expresion {
             throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Se esperaba un ENTERO, DECIMAL o BOOLEAN y se obtuvo un " + Retorno_1.Tipo[val.type]);
         }
         // devolviendo un string
-        return { value: val.value.toString(), type: Retorno_1.Tipo.CADENA };
+        return { value: val.value.toString(), type: Retorno_1.Tipo.CADENA, output: val.output };
     }
 }
 exports.ToString = ToString;

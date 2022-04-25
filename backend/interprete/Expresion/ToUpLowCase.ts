@@ -16,7 +16,7 @@ export class ToUpperCase extends Expresion {
         if (value.type != Tipo.CADENA) {
             throw new _Error(this.linea, this.columna, "Semántico", "Se esperaba una CADENA y se obtuvo un " + Tipo[value.type]);
         }
-        return { value: value.value.toUpperCase(), type: Tipo.CADENA };
+        return { value: value.value.toUpperCase(), type: Tipo.CADENA, output: value.output };
     }
 }
 
@@ -31,6 +31,6 @@ export class ToLowerCase extends Expresion {
         if (value.type != Tipo.CADENA) {
             throw new _Error(this.linea, this.columna, "Semántico", "Se esperaba una CADENA y se obtuvo un " + Tipo[value.type]);
         }
-        return { value: value.value.toLowerCase(), type: Tipo.CADENA };
+        return { value: value.value.toLowerCase(), type: Tipo.CADENA, output: value.output };
     }
 }

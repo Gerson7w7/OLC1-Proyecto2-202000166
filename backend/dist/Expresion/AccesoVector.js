@@ -23,7 +23,7 @@ class AccesoVector extends Expresion_1.Expresion {
             dimension.push(value.value);
         }
         let valor = this.devolverValor(lista, dimension);
-        return { value: valor, type: lista.type };
+        return { value: valor, type: lista.type, output: null };
     }
     devolverValor(lista, dimension) {
         if (lista != null) {

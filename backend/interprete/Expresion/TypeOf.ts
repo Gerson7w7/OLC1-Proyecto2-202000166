@@ -11,9 +11,9 @@ export class TypeOf extends Expresion {
         // ejecutando la expresion
         const val = this.expresion.ejecutar(scope);
         if (val.value instanceof Array) {
-            return { value: "VECTOR", type: Tipo.CADENA };
+            return { value: "VECTOR", type: Tipo.CADENA, output: val.output };
         }
         // devolviendo el tipo de dato
-        return { value: Tipo[val.type].toString(), type: Tipo.CADENA };
+        return { value: Tipo[val.type].toString(), type: Tipo.CADENA, output: val.output };
     }
 }

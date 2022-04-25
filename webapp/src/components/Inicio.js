@@ -211,12 +211,12 @@ const Inicio = () => {
               }} >
                 Errores
               </button>
-              <button className="dropdown-item" href="#inicio" onClick={() => {
+              <button className="dropdown-item" onClick={() => {
                 navigate("/AST");
               }}>
                 Árbol AST
               </button>
-              <button className="dropdown-item" href="#inicio" onClick={() => {
+              <button className="dropdown-item" onClick={() => {
                 navigate("/simbolos");
               }}>
                 Tabla de Símbolos

@@ -17,12 +17,12 @@ export class Logico extends Expresion {
         }
 
         if (valorIzquierda.type == Tipo.BOOLEAN && valorDerecha == null) {
-            return { value: (!valorIzquierda.value), type: Tipo.BOOLEAN };
+            return { value: (!valorIzquierda.value), type: Tipo.BOOLEAN, output: valorIzquierda.output };
         } else if (valorIzquierda.type == Tipo.BOOLEAN && valorDerecha.type == Tipo.BOOLEAN) {
             if (this.tipo == TipoLogico.OR) {
-                return { value: (valorIzquierda.value || valorDerecha.value), type: Tipo.BOOLEAN };
+                return { value: (valorIzquierda.value || valorDerecha.value), type: Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
             } 
-            return { value: (valorIzquierda.value && valorDerecha.value), type: Tipo.BOOLEAN };
+            return { value: (valorIzquierda.value && valorDerecha.value), type: Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };
         }
         if (valorDerecha == null) {
             throw new _Error(this.linea, this.columna, "Semántico", "No se puede negar a nivel lógico " + valorIzquierda.value);

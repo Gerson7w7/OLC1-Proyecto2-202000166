@@ -15,6 +15,6 @@ export class ToChararray extends Expresion {
             throw new _Error(this.linea, this.columna, "Semántico", "Se esperaba una CADENA y se obtuvo un " + Tipo[val.type]);
         }
         // devolviendo un vector
-        return { value: Array.from(val.value), type: Tipo.CARACTER };
+        return { value: Array.from(val.value), type: Tipo.CARACTER, output: val.output };
     }
 }

@@ -14,19 +14,19 @@ class Casteo extends Expresion_1.Expresion {
         // valor de la expresion 
         const valorExpresion = this.expresion.ejecutar(scope);
         if (valorExpresion.type == Retorno_1.Tipo.ENTERO && this.tipo == 'double') {
-            return { value: valorExpresion.value.toFixed(1), type: Retorno_1.Tipo.DECIMAL };
+            return { value: valorExpresion.value.toFixed(1), type: Retorno_1.Tipo.DECIMAL, output: valorExpresion.output };
         }
         else if (valorExpresion.type == Retorno_1.Tipo.DECIMAL && this.tipo == 'int') {
-            return { value: parseInt(valorExpresion.value, 10), type: Retorno_1.Tipo.ENTERO };
+            return { value: parseInt(valorExpresion.value, 10), type: Retorno_1.Tipo.ENTERO, output: valorExpresion.output };
         }
         else if (valorExpresion.type == Retorno_1.Tipo.ENTERO && this.tipo == 'char') {
-            return { value: String.fromCharCode(valorExpresion.value), type: Retorno_1.Tipo.CARACTER };
+            return { value: String.fromCharCode(valorExpresion.value), type: Retorno_1.Tipo.CARACTER, output: valorExpresion.output };
         }
         else if (valorExpresion.type == Retorno_1.Tipo.CARACTER && this.tipo == 'int') {
-            return { value: valorExpresion.value.charCodeAt(0), type: Retorno_1.Tipo.ENTERO };
+            return { value: valorExpresion.value.charCodeAt(0), type: Retorno_1.Tipo.ENTERO, output: valorExpresion.output };
         }
         else if (valorExpresion.type == Retorno_1.Tipo.CARACTER && this.tipo == 'double') {
-            return { value: valorExpresion.value.charCodeAt(0).toFixed(1), type: Retorno_1.Tipo.DECIMAL };
+            return { value: valorExpresion.value.charCodeAt(0).toFixed(1), type: Retorno_1.Tipo.DECIMAL, output: valorExpresion.output };
         }
         throw new _Error_1._Error(this.linea, this.columna, "Semántico", "Error de casteo. No es posible pasar de " + Retorno_1.Tipo[valorExpresion.type] + " a " + this.tipo.toUpperCase());
     }

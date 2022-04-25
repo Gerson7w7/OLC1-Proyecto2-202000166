@@ -11,6 +11,7 @@ export enum Tipo {
 export type Retorno = {
     value: any,
     type: Tipo
+    output: string;
 }
 
 export const dominanteSuma = [

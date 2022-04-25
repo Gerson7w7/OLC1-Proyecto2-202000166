@@ -17,9 +17,9 @@ export class Ternario extends Expresion {
 
         if(valorCondicion.type == Tipo.BOOLEAN) {
             if(valorCondicion.value == true) {
-                return { value: valorCase1.value, type: valorCase1.type };
+                return { value: valorCase1.value, type: valorCase1.type, output: valorCase1.output };
             } else {
-                return { value: valorCase2.value, type: valorCase2.type };
+                return { value: valorCase2.value, type: valorCase2.type, output: valorCase2.output };
             }
         }
         throw new _Error(this.linea, this.columna, "Semántico", "Se esperaba un " + Tipo[Tipo.BOOLEAN] + " como condición, y se encontró un " + Tipo[valorCondicion.type]);
