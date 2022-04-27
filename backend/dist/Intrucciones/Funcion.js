@@ -13,7 +13,13 @@ class Funcion extends Instruccion_1.Instruccion {
         this.bloque = bloque;
     }
     ejecutar(scope) {
-        scope.guardarFuncion(this.id, this, this.linea, this.columna);
+        let tipo = 'Método';
+        let tipoDato = 'VOID';
+        if (this.tipoRetorno != null) {
+            tipo = 'Función';
+            tipoDato = this.tipoRetorno.toUpperCase();
+        }
+        scope.guardarFuncion(this.id, this, this.linea, this.columna, tipo, tipoDato);
         return null;
     }
     // método para validar los tipos de expresiones mandados como argumentos

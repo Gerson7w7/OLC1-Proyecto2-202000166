@@ -10,7 +10,7 @@ const { ArbolAST } = require("./dist/Extra/ArbolAST");
 const { LlamadaFuncion } = require("./dist/Intrucciones/LlamadaFuncion");
 
 // lista de errores
-let lista_errores = [];
+let lista_errores = [], lista_simbolos = [];
 let strast = 'graph G{"No se ha podido graficar el árbol."}';
 
 const app = express();
@@ -112,9 +112,14 @@ app.post("/grammar", (req, res) => {
     strast += raiz.recorrerArbol(ASTparser.parse(data.data));
     strast += "}";
   }
+
   console.log("salida: " + salida);
   res.send({ salida: salida });
 });
+
+function getSimbolos(simbolo) {
+  lista_simbolos.push(simbolo);
+}
 
 app.get("/errores", (req, res) => {
   console.log("soi errores backend");

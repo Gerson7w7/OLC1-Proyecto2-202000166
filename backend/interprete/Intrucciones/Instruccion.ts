@@ -1,4 +1,3 @@
-import { Nodo } from "../Extra/ArbolAST";
 import { Scope } from "../Extra/Scope";
 import { Retorno } from "./Retorno";
 

@@ -4,15 +4,16 @@ exports.Scope = void 0;
 const Retorno_1 = require("../Expresion/Retorno");
 const Simbolo_1 = require("./Simbolo");
 const _Error_1 = require("../Error/_Error");
+const TablaSimbolo_1 = require("./TablaSimbolo");
 class Scope {
     constructor(padre) {
         this.padre = padre;
+        this.simbolos = [];
         this.variables = new Map();
         this.funciones = new Map();
     }
     crearVar(id, value, type, linea, columna) {
         let scope = this;
-        //console.log("valor: " + value);
         while (scope != null) {
             if (scope.variables.has(id)) {
                 throw new _Error_1._Error(linea, columna, "Semántico", "La variable " + id + " ya ha sido declarada.");
@@ -39,6 +40,7 @@ class Scope {
         else {
             this.variables.set(id, new Simbolo_1.Simbolo(value, id, type));
         }
+        this.simbolos.push(new TablaSimbolo_1.TablaSimbolo(id, 'variable', Retorno_1.Tipo[type], '', linea, columna));
     }
     setValor(id, value, type, linea, columna) {
         let scope = this;
@@ -99,7 +101,7 @@ class Scope {
         }
         throw new _Error_1._Error(linea, columna, "Semántico", "No se ha declarado la variable " + id);
     }
-    guardarFuncion(id, funcion, linea, columna) {
+    guardarFuncion(id, funcion, linea, columna, tipo, tipoDato) {
         let scope = this;
         while (scope != null) {
             if (scope.funciones.has(id)) {
@@ -108,6 +110,7 @@ class Scope {
             scope = scope.padre;
         }
         this.funciones.set(id, funcion);
+        this.simbolos.push(new TablaSimbolo_1.TablaSimbolo(id, tipo, tipoDato, '', linea, columna));
     }
     getFuncion(id, linea, columna) {
         let scope = this;

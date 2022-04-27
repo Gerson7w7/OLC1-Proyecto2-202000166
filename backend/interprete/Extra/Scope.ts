@@ -2,10 +2,12 @@ import { Tipo } from "../Expresion/Retorno";
 import { Simbolo } from "./Simbolo";
 import { _Error } from "../Error/_Error";
 import { Funcion } from "../Intrucciones/Funcion";
+import { TablaSimbolo } from "./TablaSimbolo";
 
 export class Scope {
     public variables: Map<string, Simbolo>;
     public funciones: Map<string, Funcion>;
+    public simbolos = [];
 
     constructor(public padre: Scope | null) {
         this.variables = new Map();
@@ -14,7 +16,6 @@ export class Scope {
 
     public crearVar(id: string, value: any, type: Tipo, linea: number, columna: number) {
         let scope: Scope | null = this;
-        //console.log("valor: " + value);
 
         while(scope != null) {
             if(scope.variables.has(id)) { 
@@ -37,6 +38,7 @@ export class Scope {
         } else {
             this.variables.set(id, new Simbolo(value, id, type));
         }
+        this.simbolos.push(new TablaSimbolo(id, 'variable', Tipo[type], '', linea, columna));
     }
 
     public setValor(id: string, value: any, type: Tipo, linea: number, columna: number) {
@@ -98,7 +100,7 @@ export class Scope {
         throw new _Error(linea, columna, "Semántico", "No se ha declarado la variable " + id);
     }
 
-    public guardarFuncion(id: string, funcion: Funcion, linea:number, columna:number) {
+    public guardarFuncion(id: string, funcion: Funcion, linea:number, columna:number, tipo:string, tipoDato:string) {
         let scope: Scope | null = this;
 
         while(scope != null) {
@@ -108,6 +110,7 @@ export class Scope {
             scope = scope.padre;
         }
         this.funciones.set(id, funcion)
+        this.simbolos.push(new TablaSimbolo(id, tipo, tipoDato, '', linea, columna));
     }
 
     public getFuncion(id: string, linea:number, columna:number): Funcion {

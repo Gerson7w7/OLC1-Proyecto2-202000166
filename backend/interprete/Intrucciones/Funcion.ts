@@ -13,7 +13,13 @@ export class Funcion extends Instruccion {
     }
 
     public ejecutar(scope: Scope): Retorno {
-        scope.guardarFuncion(this.id, this, this.linea, this.columna);
+        let tipo = 'Método';
+        let tipoDato = 'VOID';
+        if (this.tipoRetorno != null) {
+            tipo = 'Función';
+            tipoDato = this.tipoRetorno.toUpperCase();
+        }
+        scope.guardarFuncion(this.id, this, this.linea, this.columna, tipo, tipoDato);
         return null;
     }
 

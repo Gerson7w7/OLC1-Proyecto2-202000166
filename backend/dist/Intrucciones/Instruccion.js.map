@@ -1,1 +1,1 @@
-{"version":3,"file":"Instruccion.js","sourceRoot":"","sources":["../../interprete/Intrucciones/Instruccion.ts"],"names":[],"mappings":";;;AAIA,MAAsB,WAAW;IAI7B,YAAY,KAAa,EAAE,OAAe;QACtC,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC;QACnB,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;IAC3B,CAAC;CAGJ;AAVD,kCAUC"}
+{"version":3,"file":"Instruccion.js","sourceRoot":"","sources":["../../interprete/Intrucciones/Instruccion.ts"],"names":[],"mappings":";;;AAGA,MAAsB,WAAW;IAI7B,YAAY,KAAa,EAAE,OAAe;QACtC,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC;QACnB,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;IAC3B,CAAC;CAGJ;AAVD,kCAUC"}

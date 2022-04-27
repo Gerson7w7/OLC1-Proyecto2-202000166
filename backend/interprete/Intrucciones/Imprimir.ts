@@ -12,23 +12,24 @@ export class Print extends Instruccion {
         const val = this.value.ejecutar(scope);
         // aki hay que poner el print en la pagina web, mientras solo le dearemos un console.log
         console.log(val.value);
+        let value = val.value.toString();
         const salto = '\\n', barraInv = '\\\\', comillaD = '\\\"', tab = '\\t', comillaS = "\\\'"; 
-        if (val.value.includes(salto)) {
-            val.value = val.value.replace(salto, '\n');
+        if (value.includes(salto)) {
+            value = value.replace(salto, '\n');
         }
-        if (val.value.includes(barraInv)) {
-            val.value = val.value.replace(barraInv, '\\');
+        if (value.includes(barraInv)) {
+            value = value.replace(barraInv, '\\');
         }
-        if (val.value.includes(comillaD)) {
-            val.value = val.value.replace(comillaD, '\"');
+        if (value.includes(comillaD)) {
+            value = value.replace(comillaD, '\"');
         } 
-        if (val.value.includes(tab)) {
-            val.value = val.value.replace(tab, '\t');
+        if (value.includes(tab)) {
+            value = value.replace(tab, '\t');
         } 
-        if (val.value.includes(comillaS)) {
-            val.value = val.value.replace(comillaS, '\'');
+        if (value.includes(comillaS)) {
+            value = value.replace(comillaS, '\'');
         }
-        return { output:val.value, transferencia: null, retorno: null };
+        return { output:value, transferencia: null, retorno: null };
     }
 }
 
@@ -41,22 +42,23 @@ export class Println extends Instruccion {
         const val = this.value.ejecutar(scope);
         // aki hay que poner el print en la pagina web, mientras solo le dearemos un console.log
         console.log(val.value);
+        let value = val.value.toString();
         const salto = '\\n', barraInv = '\\\\', comillaD = '\\\"', tab = '\\t', comillaS = "\\\'"; 
-        if (val.value.includes(salto)) {
-            val.value = val.value.replace(salto, '\n');
+        if (value.includes(salto)) {
+            value = value.replace(salto, '\n');
         }
-        if (val.value.includes(barraInv)) {
-            val.value = val.value.replace(barraInv, '\\');
+        if (value.includes(barraInv)) {
+            value = value.replace(barraInv, '\\');
         }
-        if (val.value.includes(comillaD)) {
-            val.value = val.value.replace(comillaD, '\"');
+        if (value.includes(comillaD)) {
+            value = value.replace(comillaD, '\"');
         } 
-        if (val.value.includes(tab)) {
-            val.value = val.value.replace(tab, '\t');
+        if (value.includes(tab)) {
+            value = value.replace(tab, '\t');
         } 
-        if (val.value.includes(comillaS)) {
-            val.value = val.value.replace(comillaS, '\'');
+        if (value.includes(comillaS)) {
+            value = value.replace(comillaS, '\'');
         }
-        return { output:val.value + "\n", transferencia: null, retorno: null };
+        return { output:value + "\n", transferencia: null, retorno: null };
     }
 }
