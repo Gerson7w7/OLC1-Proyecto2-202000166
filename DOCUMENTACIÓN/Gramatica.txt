@@ -1,0 +1,222 @@
+Gramática usada para el desarrollo del proyecto 2 de Organanización de Lenguajes y Compiladores 1. 
+Primer semestre 2022.
+Gerson Rubén Quiroa del Cid.
+Carné 202000166
+
+Precedencia:
+izquierda - COMA CORCHETE_CIERRA
+izquierda - INTERROGACION PARENTESIS_CIERRA
+izquierda - OR
+izquierda - AND
+izquierda - MODULO
+izquierda - IGUAL DESIGUAL MENOR MENOR_IGUAL MAYOR MAYOR_IGUAL
+izquierda - SUMA RESTA
+izquierda - MULTIPLICACION DIVISION
+izquierda - POTENCIA
+izquierda - UMENOS
+derecha - IDENTIFICADOR
+derecha - casteo
+derecha - NOT
+
+Inicio de la gramática: ini
+
+ini -> instrucciones EOF
+    | EOF
+;
+
+instrucciones -> instrucciones instruccion
+    | instruccion
+;
+
+instruccion -> declaracion PUNTO_COMA
+    | asignacion_simple PUNTO_COMA
+    | imprimir PUNTO_COMA
+    | incremento_decremento PUNTO_COMA
+    | declaracion_vector PUNTO_COMA
+    | asignacion_simple_vector PUNTO_COMA
+    | if
+    | while
+    | switch
+    | for
+    | do-while
+    | funcion
+    | metodo
+    | llamada_funcion PUNTO_COMA
+    | RUN llamada_funcion PUNTO_COMA
+    | BREAK PUNTO_COMA
+    | CONTINUE PUNTO_COMA
+    | RETURN PUNTO_COMA
+    | RETURN expresion PUNTO_COMA
+    | errores
+;
+
+errores -> ERROR
+    | error
+;
+
+tipo -> INT     
+    | DOUBLE
+    | BOOLEAN
+    | CHAR
+    | STRING
+;
+
+declaracion -> tipo identificadores ASIGNACION expresion
+    | tipo identificadores
+;
+
+asignacion_simple -> IDENTIFICADOR ASIGNACION expresion
+;
+
+identificadores -> identificadores COMA IDENTIFICADOR
+    | IDENTIFICADOR
+;
+
+expresion -> RESTA expresion con precedencia de: UMENOS
+    | expresion SUMA expresion 
+    | expresion RESTA expresion
+    | expresion MULTIPLICACION expresion
+    | expresion DIVISION expresion
+    | expresion POTENCIA expresion 
+    | expresion MODULO expresion 
+    | PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+    | expresion IGUAL expresion 
+    | expresion DESIGUAL expresion
+    | expresion MENOR expresion
+    | expresion MENOR_IGUAL expresion
+    | expresion MAYOR expresion
+    | expresion MAYOR_IGUAL expresion 
+    | NOT expresion
+    | expresion OR expresion
+    | expresion AND expresion
+    | ENTERO 
+    | DECIMAL
+    | CARACTER
+    | CADENA
+    | IDENTIFICADOR
+    | FALSE
+    | TRUE
+    | ternario
+    | IDENTIFICADOR corchetes_con_expresion
+    | casteo expresion
+    | incremento_decremento
+    | funciones_nativas
+    | llamada_funcion 
+;
+
+imprimir -> PRINT PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+    | PRINTLN PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+;
+
+ternario -> expresion INTERROGACION expresion DOS_PUNTOS expresion
+;
+
+casteo -> PARENTESIS_ABRE tipo PARENTESIS_CIERRA
+;
+
+incremento_decremento -> expresion SUMA SUMA
+    | expresion RESTA RESTA
+;
+
+declaracion_vector -> tipo IDENTIFICADOR corchetes_vacios ASIGNACION NEW tipo corchetes_con_expresion
+    | tipo IDENTIFICADOR corchetes_vacios ASIGNACION CORCHETE_ABRE lista_valores_vectores CORCHETE_CIERRA
+    | tipo IDENTIFICADOR corchetes_vacios ASIGNACION expresion
+;
+
+corchetes_vacios -> CORCHETE_ABRE CORCHETE_CIERRA corchetes_vacios
+    | CORCHETE_ABRE CORCHETE_CIERRA
+;
+
+corchetes_con_expresion -> corchetes_con_expresion CORCHETE_ABRE expresion CORCHETE_CIERRA
+    | CORCHETE_ABRE expresion CORCHETE_CIERRA
+;
+
+lista_valores_vectores -> CORCHETE_ABRE lista_expresiones CORCHETE_CIERRA COMA  lista_valores_vectores
+    | CORCHETE_ABRE lista_expresiones CORCHETE_CIERRA
+    | lista_expresiones
+;
+
+lista_expresiones -> lista_expresiones COMA expresion
+    | expresion
+;
+
+asignacion_simple_vector -> IDENTIFICADOR corchetes_con_expresion ASIGNACION expresion
+;
+
+bloque -> LLAVE_ABRE instrucciones LLAVE_CIERRA
+    | LLAVE_ABRE LLAVE_CIERRA 
+;
+
+condicion -> PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+;
+
+if -> IF condicion bloque else
+;
+
+else -> ELSE bloque
+    | ELSE if 
+    | epsilon
+;
+
+while -> WHILE condicion bloque
+;
+
+switch -> SWITCH condicion LLAVE_ABRE case_list default LLAVE_CIERRA
+    | SWITCH condicion LLAVE_ABRE case_list LLAVE_CIERRA
+    | SWITCH condicion LLAVE_ABRE default LLAVE_CIERRA
+;
+
+case_list -> case_list case
+    | case
+;
+
+case -> CASE expresion DOS_PUNTOS instrucciones
+;
+
+default
+    : DEFAULT DOS_PUNTOS instrucciones
+;
+
+for -> FOR PARENTESIS_ABRE for1 PUNTO_COMA expresion PUNTO_COMA for2 PARENTESIS_CIERRA bloque
+;
+
+for1 -> declaracion
+    | asignacion_simple
+;
+
+for2 -> asignacion_simple 
+    | expresion
+;
+
+do-while -> DO bloque WHILE condicion PUNTO_COMA  { $$ = new DoWhile($2, $4, @1.first_line, @1.first_column) }
+;
+
+funciones_nativas -> TOUPPER PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+    | TOLOWER PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+    | ROUND PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+    | LENGTH PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+    | TYPEOF PARENTESIS_ABRE expresion PARENTESIS_CIERRA 
+    | TOSTRING PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+    | TOCHARARRAY PARENTESIS_ABRE expresion PARENTESIS_CIERRA
+;
+
+funcion -> IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA DOS_PUNTOS tipo bloque 
+    | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA DOS_PUNTOS tipo bloque
+;
+
+metodo -> IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA DOS_PUNTOS VOID bloque
+    | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA DOS_PUNTOS VOID bloque
+    | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA bloque
+    | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA bloque
+;
+
+parametros -> parametros COMA parametros2 
+    | parametros2  
+;
+
+parametros2 -> tipo IDENTIFICADOR
+;
+
+llamada_funcion -> IDENTIFICADOR PARENTESIS_ABRE lista_expresiones PARENTESIS_CIERRA 
+    | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA
+;
