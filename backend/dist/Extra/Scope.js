@@ -51,7 +51,7 @@ class Scope {
                     scope.variables.set(id, new Simbolo_1.Simbolo(value, id, type));
                 }
                 else {
-                    throw new _Error_1._Error(linea, columna, "Semántico", "Tipos incompatibles, " + type + " no puede convertirse a " + val.type);
+                    throw new _Error_1._Error(linea, columna, "Semántico", "Tipos incompatibles, " + Retorno_1.Tipo[type] + " no puede convertirse a " + Retorno_1.Tipo[val.type]);
                 }
             }
             scope = scope.padre;

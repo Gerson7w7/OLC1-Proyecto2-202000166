@@ -50,7 +50,7 @@ export class Scope {
                 if(val.type == type) {
                     scope.variables.set(id, new Simbolo(value, id, type));
                 } else {
-                    throw new _Error(linea, columna, "Semántico", "Tipos incompatibles, " + type + " no puede convertirse a " + val.type);
+                    throw new _Error(linea, columna, "Semántico", "Tipos incompatibles, " + Tipo[type] + " no puede convertirse a " + Tipo[val.type]);
                 }
             }
             scope = scope.padre;

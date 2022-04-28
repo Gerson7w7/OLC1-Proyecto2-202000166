@@ -99,7 +99,7 @@ export class DeclaracionVector1 extends Instruccion {
 }
 
 export class DeclaracionVector2 extends Instruccion {
-    constructor(private type: string, private id: string, private expresiones: Expresion[]| Expresion[][] | Expresion, linea: number, columna: number) {
+    constructor(public type: string, private id: string, private expresiones: Expresion[]| Expresion[][] | Expresion, linea: number, columna: number) {
         super(linea, columna); 
     }
 

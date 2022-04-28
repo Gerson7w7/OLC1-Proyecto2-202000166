@@ -23,7 +23,13 @@ export class LlamadaFuncion extends Instruccion {
         for (let i = 0; i < this.argumentos.length; i++) {
             // argumentos de la llamada a la función
             const valueArgs = this.argumentos[i].ejecutar(scope);
-            newScope.crearVar(funcion.parametros[i].ids[0], valueArgs.value, valueArgs.type, this.linea, this.columna);
+            let id:any;
+            if (funcion.parametros[i].ids != undefined) {
+                id = funcion.parametros[i].ids[0]
+            } else {
+                id = funcion.parametros[i].id
+            }
+            newScope.crearVar(id, valueArgs.value, valueArgs.type, this.linea, this.columna);
         }
         // ejecutando las instrucciones de la función
         const valBloque = funcion.bloque.ejecutar(newScope);

@@ -42,6 +42,9 @@ class Relacional extends Expresion_1.Expresion {
         else if (valorIzquierda.type == Retorno_1.Tipo.BOOLEAN && valorDerecha.type == Retorno_1.Tipo.BOOLEAN) {
             permitido = true;
         }
+        else if (valorIzquierda.type == Retorno_1.Tipo.DECIMAL && valorDerecha.type == Retorno_1.Tipo.DECIMAL) {
+            permitido = true;
+        }
         if (permitido) {
             if (this.tipo == TipoRelacional.IGUAL) {
                 return { value: (valorIzquierda.value == valorDerecha.value), type: Retorno_1.Tipo.BOOLEAN, output: valorIzquierda.output + valorDerecha.output };

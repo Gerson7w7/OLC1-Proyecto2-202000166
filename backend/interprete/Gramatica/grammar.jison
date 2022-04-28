@@ -37,9 +37,9 @@
 %%
 
 // comentarios y espacios a ignorar
-\s+                         // ignorar espacios en blanco
-"/*"[^"*/"]*"*/"            // comentarios multilínea
-"//".*                      // comentario de una línea
+\s+                                 // ignorar espacios en blanco
+"//".*                              // comentario de una línea
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // comentarios multilínea
 
 // tipos de datos
 "int"                       return 'INT';
@@ -130,13 +130,13 @@
 /lex
 
 %left 'COMA' 'CORCHETE_CIERRA'
-%left 'INTERROGACION' 'PARENTESIS_CIERRA'
+%left 'INTERROGACION' 'DOS_PUNTOS' 'PARENTESIS_CIERRA'
 %left 'OR'
 %left 'AND'
-%left 'MODULO'
-%left 'IGUAL' 'DESIGUAL' 'MENOR' 'MENOR_IGUAL' 'MAYOR' 'MAYOR_IGUAL' 
+%left 'DESIGUAL' 'IGUAL'
+%left 'MENOR_IGUAL' 'MAYOR_IGUAL' 'MENOR' 'MAYOR'
 %left 'SUMA' 'RESTA'
-%left 'MULTIPLICACION' 'DIVISION'
+%left 'MULTIPLICACION' 'DIVISION' 'MODULO'
 %left 'POTENCIA'
 %left UMENOS
 %right 'IDENTIFICADOR'
@@ -387,7 +387,8 @@ parametros
 ;
 
 parametros2
-    : tipo IDENTIFICADOR    { $$ = new Declaracion($1, [$2], null, @1.first_line, @1.first_column) }
+    : tipo IDENTIFICADOR                    { $$ = new Declaracion($1, [$2], null, @1.first_line, @1.first_column) }
+    | tipo IDENTIFICADOR corchetes_vacios   { $$ = new DeclaracionVector2($1, $2, null, @1.first_line, @1.first_column) }
 ;
 
 llamada_funcion

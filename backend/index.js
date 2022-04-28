@@ -106,6 +106,9 @@ app.post("/grammar", (req, res) => {
     }
   }
 
+  console.log("LLEGUE AKIIIIIIIIII")
+  console.log("salida: " + salida);
+
   if (sinErrores) {
     strast = "digraph G{";
     const raiz = new ArbolAST();
@@ -113,7 +116,6 @@ app.post("/grammar", (req, res) => {
     strast += "}";
   }
 
-  console.log("salida: " + salida);
   res.send({ salida: salida });
 });
 

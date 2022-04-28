@@ -1,5 +1,6 @@
 %{
     const { Nodo } = require("../Extra/ArbolAST");
+    const { _Error } = require("../Error/_Error");
 %}
 
 %lex
@@ -9,9 +10,9 @@
 %%
 
 // comentarios y espacios a ignorar
-\s+                         // ignorar espacios en blanco
-"/*"[^"*/"]*"*/"            // comentarios multilínea
-"//".*                      // comentario de una línea
+\s+                                 // ignorar espacios en blanco
+"//".*                              // comentario de una línea
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // comentarios multilínea
 
 // tipos de datos
 "int"                       return 'INT';
@@ -97,18 +98,18 @@
 \'\\?.\'                	{ yytext = yytext.substr(1,yyleng-2); return 'CARACTER'; }
 
 <<EOF>>				        return 'EOF';
-.					        { throw new _Error(yylloc.first_line, yylloc.first_column, "Léxico", "No se reconoce el siguiente token: " + yytext, yytext) }
+.					        return 'ERROR';
 
 /lex
 
 %left 'COMA' 'CORCHETE_CIERRA'
-%left 'INTERROGACION' 'PARENTESIS_CIERRA'
+%left 'INTERROGACION' 'DOS_PUNTOS' 'PARENTESIS_CIERRA'
 %left 'OR'
 %left 'AND'
-%left 'MODULO'
-%left 'IGUAL' 'DESIGUAL' 'MENOR' 'MENOR_IGUAL' 'MAYOR' 'MAYOR_IGUAL' 
+%left 'DESIGUAL' 'IGUAL'
+%left 'MENOR_IGUAL' 'MAYOR_IGUAL' 'MENOR' 'MAYOR'
 %left 'SUMA' 'RESTA'
-%left 'MULTIPLICACION' 'DIVISION'
+%left 'MULTIPLICACION' 'DIVISION' 'MODULO'
 %left 'POTENCIA'
 %left UMENOS
 %right 'IDENTIFICADOR'
@@ -243,7 +244,7 @@ incremento_decremento
 declaracion_vector 
     : tipo IDENTIFICADOR corchetes_vacios ASIGNACION NEW tipo corchetes_con_expresion                       { $$ = new Nodo('declaracion_vector'); $$.agregarHijo($1); $$.agregarHijo(new Nodo($2)); $$.agregarHijo($3); $$.agregarHijo(new Nodo('=')); $$.agregarHijo(new Nodo('new')); $$.agregarHijo($6); $$.agregarHijo($7); }
     | tipo IDENTIFICADOR corchetes_vacios ASIGNACION CORCHETE_ABRE lista_valores_vectores CORCHETE_CIERRA   { $$ = new Nodo('declaracion_vector'); $$.agregarHijo($1); $$.agregarHijo(new Nodo($2)); $$.agregarHijo($3); $$.agregarHijo(new Nodo('=')); $$.agregarHijo(new Nodo('[')); $$.agregarHijo($6); $$.agregarHijo(new Nodo(']')); }   
-    | tipo IDENTIFICADOR corchetes_vacios ASIGNACION expresion                                              { $$ = new Nodo('declaracion_vector'); $$.agregarHijo($1); $$.agregarHijo(new Nodo($2)); $$.agregarHijo($3); $$.agregarHijo(new Nodo('=')); $$.agregarHijo($5); }                                                                                      
+    | tipo IDENTIFICADOR corchetes_vacios ASIGNACION expresion                                              { $$ = new Nodo('declaracion_vector'); $$.agregarHijo($1); $$.agregarHijo(new Nodo($2)); $$.agregarHijo($3); $$.agregarHijo(new Nodo('=')); $$.agregarHijo($5); }
 ;
 
 corchetes_vacios
@@ -369,7 +370,8 @@ parametros
 ;
 
 parametros2
-    : tipo IDENTIFICADOR    { $$ = new Nodo('parametros2'); $$.agregarHijo($1); $$.agregarHijo(new Nodo($2)); } 
+    : tipo IDENTIFICADOR                    { $$ = new Nodo('parametros2'); $$.agregarHijo($1); $$.agregarHijo(new Nodo($2)); }
+    | tipo IDENTIFICADOR corchetes_vacios   { $$ = new Nodo('parametros2'); $$.agregarHijo($1); $$.agregarHijo(new Nodo($2)); $$.agregarHijo($3); }
 ;
 
 llamada_funcion

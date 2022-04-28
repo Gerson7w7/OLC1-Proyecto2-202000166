@@ -31,6 +31,8 @@ export class Relacional extends Expresion {
             permitido = true;
         } else if (valorIzquierda.type == Tipo.BOOLEAN && valorDerecha.type == Tipo.BOOLEAN) {
             permitido = true;
+        } else if (valorIzquierda.type == Tipo.DECIMAL && valorDerecha.type == Tipo.DECIMAL) {
+            permitido = true;
         }
 
         if (permitido) {

@@ -3,12 +3,11 @@ import { Expresion } from "../Expresion/Expresion";
 import { Tipo } from "../Expresion/Retorno";
 import { Scope } from "../Extra/Scope";
 import { Bloque } from "./Bloque";
-import { Declaracion } from "./Declaracion";
 import { Instruccion } from "./Instruccion";
 import { Retorno } from "./Retorno";
 
 export class Funcion extends Instruccion {
-    constructor(private id: string, public parametros: Declaracion[], private tipoRetorno: string | null, public bloque: Bloque, linea: number, columna: number) {
+    constructor(private id: string, public parametros:any, private tipoRetorno: string | null, public bloque: Bloque, linea: number, columna: number) {
         super(linea, columna);
     }
 
