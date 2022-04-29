@@ -3,6 +3,13 @@ Primer semestre 2022.
 Gerson Rubén Quiroa del Cid.
 Carné 202000166
 
+Expresiones regulares:
+[0-9]+("."[0-9]+)\b  	    números decimales
+[0-9]+\b				    números enteros
+([a-zA-Z_])[a-zA-Z0-9_]*	identificadores, empieza con una letra o guión bajo
+\"[^\"]*\"			        cadenas entre comillas dobles
+\'\\?.\'                	caracteres entre comillas simples
+
 Precedencia:
 izquierda - COMA CORCHETE_CIERRA
 izquierda - INTERROGACION PARENTESIS_CIERRA
@@ -20,14 +27,17 @@ derecha - NOT
 
 Inicio de la gramática: ini
 
+instrucciones de la gramática:
 ini -> instrucciones EOF
     | EOF
 ;
 
+lista de intrucciones:
 instrucciones -> instrucciones instruccion
     | instruccion
 ;
 
+las diferentes instrucciones de nuestro lenguaje:
 instruccion -> declaracion PUNTO_COMA
     | asignacion_simple PUNTO_COMA
     | imprimir PUNTO_COMA
@@ -50,10 +60,12 @@ instruccion -> declaracion PUNTO_COMA
     | errores
 ;
 
+produccion para los errores:
 errores -> ERROR
     | error
 ;
 
+tipos de datos de nuestro lenguaje:
 tipo -> INT     
     | DOUBLE
     | BOOLEAN
@@ -61,17 +73,21 @@ tipo -> INT
     | STRING
 ;
 
+declararciones de variables:
 declaracion -> tipo identificadores ASIGNACION expresion
     | tipo identificadores
 ;
 
+asignacion de variables:
 asignacion_simple -> IDENTIFICADOR ASIGNACION expresion
 ;
 
+produccion para los identificadores en lista separado por comas:
 identificadores -> identificadores COMA IDENTIFICADOR
     | IDENTIFICADOR
 ;
 
+expresiones de nuestro lenguaje:
 expresion -> RESTA expresion con precedencia de: UMENOS
     | expresion SUMA expresion 
     | expresion RESTA expresion
@@ -104,93 +120,116 @@ expresion -> RESTA expresion con precedencia de: UMENOS
     | llamada_funcion 
 ;
 
+produccion para los prints y printlns de nuestro lenguaje:
 imprimir -> PRINT PARENTESIS_ABRE expresion PARENTESIS_CIERRA
     | PRINTLN PARENTESIS_ABRE expresion PARENTESIS_CIERRA
 ;
 
+produccion para nuestra funcion ternaria:
 ternario -> expresion INTERROGACION expresion DOS_PUNTOS expresion
 ;
 
+produccion para el casteo de variables:
 casteo -> PARENTESIS_ABRE tipo PARENTESIS_CIERRA
 ;
 
+incremento y decremento de variables:
 incremento_decremento -> expresion SUMA SUMA
     | expresion RESTA RESTA
 ;
 
+declaraciones para vectores:
 declaracion_vector -> tipo IDENTIFICADOR corchetes_vacios ASIGNACION NEW tipo corchetes_con_expresion
     | tipo IDENTIFICADOR corchetes_vacios ASIGNACION CORCHETE_ABRE lista_valores_vectores CORCHETE_CIERRA
     | tipo IDENTIFICADOR corchetes_vacios ASIGNACION expresion
 ;
 
+corchetes vacios [][]:
 corchetes_vacios -> CORCHETE_ABRE CORCHETE_CIERRA corchetes_vacios
     | CORCHETE_ABRE CORCHETE_CIERRA
 ;
 
+corchetes con expresiones para encontrar una posicion:
 corchetes_con_expresion -> corchetes_con_expresion CORCHETE_ABRE expresion CORCHETE_CIERRA
     | CORCHETE_ABRE expresion CORCHETE_CIERRA
 ;
 
+lista de vectores para inicializar un vector:
 lista_valores_vectores -> CORCHETE_ABRE lista_expresiones CORCHETE_CIERRA COMA  lista_valores_vectores
     | CORCHETE_ABRE lista_expresiones CORCHETE_CIERRA
     | lista_expresiones
 ;
 
+lista de valores para inicializar un vector:
 lista_expresiones -> lista_expresiones COMA expresion
     | expresion
 ;
 
+asignacion para vectores:
 asignacion_simple_vector -> IDENTIFICADOR corchetes_con_expresion ASIGNACION expresion
 ;
 
+bloque de código limitado por {}:
 bloque -> LLAVE_ABRE instrucciones LLAVE_CIERRA
     | LLAVE_ABRE LLAVE_CIERRA 
 ;
 
+condiciones para algunas instrucciones que lo necesiten:
 condicion -> PARENTESIS_ABRE expresion PARENTESIS_CIERRA
 ;
 
+funcion if:
 if -> IF condicion bloque else
 ;
 
+funcion else:
 else -> ELSE bloque
     | ELSE if 
     | epsilon
 ;
 
+funcion while:
 while -> WHILE condicion bloque
 ;
 
+funcion switch:
 switch -> SWITCH condicion LLAVE_ABRE case_list default LLAVE_CIERRA
     | SWITCH condicion LLAVE_ABRE case_list LLAVE_CIERRA
     | SWITCH condicion LLAVE_ABRE default LLAVE_CIERRA
 ;
 
+lista de cases que pueden haber en un switch:
 case_list -> case_list case
     | case
 ;
 
+case de un switch:
 case -> CASE expresion DOS_PUNTOS instrucciones
 ;
 
-default
-    : DEFAULT DOS_PUNTOS instrucciones
+default de un switch:
+default -> DEFAULT DOS_PUNTOS instrucciones
 ;
 
+instruccion for:
 for -> FOR PARENTESIS_ABRE for1 PUNTO_COMA expresion PUNTO_COMA for2 PARENTESIS_CIERRA bloque
 ;
 
+asignacion o declaracion para el for:
 for1 -> declaracion
     | asignacion_simple
 ;
 
+expresion para sumar a la variables del for:
 for2 -> asignacion_simple 
     | expresion
 ;
 
+instruccion do-while:
 do-while -> DO bloque WHILE condicion PUNTO_COMA  { $$ = new DoWhile($2, $4, @1.first_line, @1.first_column) }
 ;
 
+diferentes funciones nativas que tiene el lenguaje:
 funciones_nativas -> TOUPPER PARENTESIS_ABRE expresion PARENTESIS_CIERRA
     | TOLOWER PARENTESIS_ABRE expresion PARENTESIS_CIERRA
     | ROUND PARENTESIS_ABRE expresion PARENTESIS_CIERRA
@@ -200,23 +239,29 @@ funciones_nativas -> TOUPPER PARENTESIS_ABRE expresion PARENTESIS_CIERRA
     | TOCHARARRAY PARENTESIS_ABRE expresion PARENTESIS_CIERRA
 ;
 
+funciones del lenguaje:
 funcion -> IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA DOS_PUNTOS tipo bloque 
     | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA DOS_PUNTOS tipo bloque
 ;
 
+métodos del lenguaje:
 metodo -> IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA DOS_PUNTOS VOID bloque
     | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA DOS_PUNTOS VOID bloque
     | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA bloque
     | IDENTIFICADOR PARENTESIS_ABRE parametros PARENTESIS_CIERRA bloque
 ;
 
+lista parametros de una funcion:
 parametros -> parametros COMA parametros2 
     | parametros2  
 ;
 
+parametro de una funcion:
 parametros2 -> tipo IDENTIFICADOR
+    | tipo IDENTIFICADOR corchetes_vacios
 ;
 
+llamada de una funcion o método:
 llamada_funcion -> IDENTIFICADOR PARENTESIS_ABRE lista_expresiones PARENTESIS_CIERRA 
     | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA
 ;
